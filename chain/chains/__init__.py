@@ -24,8 +24,8 @@ class CHAIN(Enum):
                 return chain
         raise ChainException(f"Cannot find chain with name {chain_name} in CHAINS.")
 
-    ARBITRUM_TESTNET = ChainDefinition(
-        "ARBITRUM_TESTNET",
+    ARBITRUM_GOERLI = ChainDefinition(
+        "ARBITRUM_GOERLI",
         "https://arb-goerli.g.alchemy.com/v2/",
         "https://api-goerli.arbiscan.io/api?module=contract&action=getabi&address=",
     )

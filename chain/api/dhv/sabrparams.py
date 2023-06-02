@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from chain.api.types import *
+from chain.abi.types import *
 from chain.contracts import Contract
 import datetime as dt
 
@@ -8,6 +8,7 @@ import datetime as dt
 @dataclass
 class _SabrParams:
     ...
+
 
 class VolFeedContract(Contract):
     def _getExpiries(self) -> list[int_e18]:

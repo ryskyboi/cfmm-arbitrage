@@ -1,0 +1,6 @@
+class AbiJson(dict):
+    ...
+
+
+class Address(str):
+    ...

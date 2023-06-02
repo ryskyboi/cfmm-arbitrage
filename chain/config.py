@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from chain.abi import abi_resource_path
+from chain.abi.path import abi_resource_path
 
 
 @dataclass
 class Config:
     alchemy_key: str
     chain_name: str
-    abi_folder: str = field(default_factory=abi_resource_path)
+    abi_resource_folder: str = field(default_factory=abi_resource_path)

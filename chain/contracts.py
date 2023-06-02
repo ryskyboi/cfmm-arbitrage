@@ -1,4 +1,14 @@
+from dataclasses import dataclass
+
 import web3.contract as wc
+
+from chain.types import Address
+
+
+@dataclass
+class ContractDefinition:
+    name: str
+    address: Address
 
 
 class Contract:

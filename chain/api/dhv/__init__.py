@@ -17,6 +17,7 @@ class SabrModelParam:
 
 @dataclass
 class SabrExpiryParams:
+    expiry_timestamp_s: float
     call_sabr: SabrModelParam
     put_sabr: SabrModelParam
     rate: float
@@ -46,6 +47,7 @@ class DhvChainReader(ChainReader):
             chain_sabr = self._vol_feed.sabrParams(t)
             sabrs.append(
                 SabrExpiryParams(
+                    t,
                     SabrModelParam(
                         cast_e6_to_float(chain_sabr[0]),
                         cast_e6_to_float(chain_sabr[1]),

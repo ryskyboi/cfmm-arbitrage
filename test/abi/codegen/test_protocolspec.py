@@ -63,4 +63,4 @@ class TestProtocolSpec(TestCase):
             ),
             abi_manager
         )
-        print(protocol_spec.generate_subpackage_source())
+        # print(protocol_spec.generate_subpackage_source())

@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from chain.abi import AbiManager
 from chain.abi.codegen import ProtocolAbiCodegen, AbiConfig
@@ -10,6 +10,7 @@ from test import test_config
 from test.abi.codegen.test_protocolspec import test_dhv_contract_defs
 
 
+@skip("Only for codegen!")
 class TestProtocolAbiCodegen(TestCase):
     def test_generate_package_source(self):
         contracts = test_dhv_contract_defs()

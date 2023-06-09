@@ -27,7 +27,7 @@ class DhvChainReader(ChainReader):
     def __init__(self, chain_def: ChainDefinition, web3_endpoint: Web3Endpoint, abi_manager: AbiManager):
         super().__init__(chain_def, web3_endpoint, abi_manager)
         self.protocol_def = "DHV"
-        from chain.abi.ARBITRUM_GOERLI.DHV.volFeed import  volFeed
+        from chain.abi.ARBITRUM_GOERLI.DHV.volFeed import volFeed
         self._vol_feed: volFeed = self._contract(volFeed)
 
     def expiry_timestamps_s(self, is_include_expired=False) -> list[int]:
@@ -35,7 +35,7 @@ class DhvChainReader(ChainReader):
         List of expiries (optionally include expired ones) as timestamps, in (int) seconds.
         :return:
         """
-        return [t for t in self._vol_feed.getExpiries() if t>int(dt.now().timestamp()) or is_include_expired]
+        return [t for t in self._vol_feed.getExpiries() if t > int(dt.now().timestamp()) or is_include_expired]
 
     def sabr_param_data(self, is_include_expired=False) -> list[SabrExpiryParams]:
         """

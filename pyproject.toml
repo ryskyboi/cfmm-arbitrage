@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chain"
-version = "0.0.0"
+version = "0.0.1"
 description = "Collection of APIs for pulling and parsing on-chain data. Async and sync."
 authors = ["degeneral <degeneral@rysk.finance>"]
 readme = "README.md"

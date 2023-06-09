@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Bump, Tag & Publish
+on:
+  pull_request_target:
+    types:
+      - closed
+jobs:
+  tag_and_publish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rysk-finance/workflow/bump_tag_and_publish@HEAD
+        with:
+            pypi_quant_pass: ${{ secrets.PYPI_QUANT_PASSWORD}}

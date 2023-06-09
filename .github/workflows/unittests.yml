@@ -1,0 +1,9 @@
+name: Apptemplate Unittests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rysk-finance/workflow/run_unittest@HEAD
+        with:
+          pypi_quant_pass: ${{secrets.PYPI_QUANT_PASSWORD}}

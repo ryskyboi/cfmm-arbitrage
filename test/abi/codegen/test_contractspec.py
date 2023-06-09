@@ -600,4 +600,4 @@ class TestContractSpec(TestCase):
 
     def test_contract(self) -> None:
         contract = self.test_abi()
-        print(contract.generate_module_source())
+        # print(contract.generate_module_source())

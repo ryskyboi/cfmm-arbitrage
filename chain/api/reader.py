@@ -11,6 +11,7 @@ _Self = TypeVar("_Self", bound='ChainReader')
 
 ContractAbi = TypeVar("ContractAbi", bound=BaseAbi)
 
+
 class ChainReader:
     protocol_name: str
 

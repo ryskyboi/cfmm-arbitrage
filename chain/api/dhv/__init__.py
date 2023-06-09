@@ -3,7 +3,6 @@ from datetime import datetime as dt
 
 from chain.abi import AbiManager
 from chain.abi.types import cast_e6_to_float
-from chain.api.dhv.sabrparams import VolFeedContract
 from chain.api.reader import ChainReader
 from chain.chains import ChainDefinition
 from chain.web3_api import Web3Endpoint

@@ -1,8 +1,6 @@
 from unittest import TestCase
 
 from chain.api.dhv import DhvChainReader
-from chain.chains import CHAIN
-from chain.web3_api import Web3Endpoint
 from test import test_config
 
 
@@ -11,4 +9,5 @@ class TestDhvChainReader(TestCase):
         dhv = DhvChainReader.from_config(
             test_config()
         )
+        # TODO: make into proper unit test
         print(dhv.sabr_param_data())

@@ -5,7 +5,7 @@ from chain.abi.codegen import BaseAbi
 from dataclasses import dataclass
 
 
-        
+
 @dataclass
 class Types_OptionSeries:
     expiration: uint64
@@ -17,14 +17,14 @@ class Types_OptionSeries:
 
 class liquidityPool(BaseAbi):
     address: Address = Address("0x0B1Bf5fb77AA36cD48Baa1395Bc2B5fa0f135d8C")
-    
+
     def DOMAIN_SEPARATOR(
         self,
     ) -> bytes32:
         return self._call(
             "DOMAIN_SEPARATOR"
         )
-        
+
     def adjustCollateral(
         self,
         lpCollateralDifference: uint_e18,
@@ -35,7 +35,7 @@ class liquidityPool(BaseAbi):
             lpCollateralDifference=lpCollateralDifference,
             addToLpBalance=addToLpBalance
         )
-        
+
     def adjustVariables(
         self,
         collateralAmount: uint_e18,
@@ -50,7 +50,7 @@ class liquidityPool(BaseAbi):
             delta=delta,
             isSale=isSale
         )
-        
+
     def allowance(
         self,
         x_0: Address,
@@ -61,7 +61,7 @@ class liquidityPool(BaseAbi):
             x_0=x_0,
             x_1=x_1
         )
-        
+
     def approve(
         self,
         spender: Address,
@@ -72,14 +72,14 @@ class liquidityPool(BaseAbi):
             spender=spender,
             amount=amount
         )
-        
+
     def authority(
         self,
     ) -> Address:
         return self._call(
             "authority"
         )
-        
+
     def balanceOf(
         self,
         x_0: Address,
@@ -88,14 +88,14 @@ class liquidityPool(BaseAbi):
             "balanceOf",
             x_0=x_0
         )
-        
+
     def bufferPercentage(
         self,
     ) -> uint_e18:
         return self._call(
             "bufferPercentage"
         )
-        
+
     def changeHandler(
         self,
         _handler: Address,
@@ -106,49 +106,49 @@ class liquidityPool(BaseAbi):
             _handler=_handler,
             auth=auth
         )
-        
+
     def checkBuffer(
         self,
     ) -> int_e18:
         return self._call(
             "checkBuffer"
         )
-        
+
     def collateralAllocated(
         self,
     ) -> uint_e18:
         return self._call(
             "collateralAllocated"
         )
-        
+
     def collateralAsset(
         self,
     ) -> Address:
         return self._call(
             "collateralAsset"
         )
-        
+
     def collateralCap(
         self,
     ) -> uint_e18:
         return self._call(
             "collateralCap"
         )
-        
+
     def completeWithdraw(
         self,
     ) -> uint_e18:
         return self._call(
             "completeWithdraw"
         )
-        
+
     def decimals(
         self,
     ) -> uint8:
         return self._call(
             "decimals"
         )
-        
+
     def deposit(
         self,
         _amount: uint_e18,
@@ -157,14 +157,14 @@ class liquidityPool(BaseAbi):
             "deposit",
             _amount=_amount
         )
-        
+
     def depositEpoch(
         self,
     ) -> uint_e18:
         return self._call(
             "depositEpoch"
         )
-        
+
     def depositEpochPricePerShare(
         self,
         x_0: uint_e18,
@@ -173,7 +173,7 @@ class liquidityPool(BaseAbi):
             "depositEpochPricePerShare",
             x_0=x_0
         )
-        
+
     def depositReceipts(
         self,
         x_0: Address,
@@ -182,35 +182,35 @@ class liquidityPool(BaseAbi):
             "depositReceipts",
             x_0=x_0
         )
-        
+
     def ephemeralDelta(
         self,
     ) -> int_e18:
         return self._call(
             "ephemeralDelta"
         )
-        
+
     def ephemeralLiabilities(
         self,
     ) -> int_e18:
         return self._call(
             "ephemeralLiabilities"
         )
-        
+
     def executeEpochCalculation(
         self,
     ) -> None:
         self._call(
             "executeEpochCalculation"
         )
-        
+
     def getAssets(
         self,
     ) -> uint_e18:
         return self._call(
             "getAssets"
         )
-        
+
     def getBalance(
         self,
         asset: Address,
@@ -219,21 +219,21 @@ class liquidityPool(BaseAbi):
             "getBalance",
             asset=asset
         )
-        
+
     def getExternalDelta(
         self,
     ) -> int_e18:
         return self._call(
             "getExternalDelta"
         )
-        
+
     def getHedgingReactors(
         self,
     ) -> list[Address]:
         return self._call(
             "getHedgingReactors"
         )
-        
+
     def getImpliedVolatility(
         self,
         isPut: bool,
@@ -248,28 +248,28 @@ class liquidityPool(BaseAbi):
             strikePrice=strikePrice,
             expiration=expiration
         )
-        
+
     def getNAV(
         self,
     ) -> uint_e18:
         return self._call(
             "getNAV"
         )
-        
+
     def getPortfolioDelta(
         self,
     ) -> int_e18:
         return self._call(
             "getPortfolioDelta"
         )
-        
+
     def getVolatilityFeed(
         self,
     ) -> Address:
         return self._call(
             "getVolatilityFeed"
         )
-        
+
     def handler(
         self,
         x_0: Address,
@@ -278,7 +278,7 @@ class liquidityPool(BaseAbi):
             "handler",
             x_0=x_0
         )
-        
+
     def handlerBuybackOption(
         self,
         optionSeries: Types_OptionSeries,
@@ -299,7 +299,7 @@ class liquidityPool(BaseAbi):
             delta=delta,
             seller=seller
         )
-        
+
     def handlerIssue(
         self,
         optionSeries: Types_OptionSeries,
@@ -308,7 +308,7 @@ class liquidityPool(BaseAbi):
             "handlerIssue",
             optionSeries=optionSeries
         )
-        
+
     def handlerIssueAndWriteOption(
         self,
         optionSeries: Types_OptionSeries,
@@ -325,7 +325,7 @@ class liquidityPool(BaseAbi):
             delta=delta,
             recipient=recipient
         )
-        
+
     def handlerWriteOption(
         self,
         optionSeries: Types_OptionSeries,
@@ -346,7 +346,7 @@ class liquidityPool(BaseAbi):
             delta=delta,
             recipient=recipient
         )
-        
+
     def hedgingReactors(
         self,
         x_0: uint_e18,
@@ -355,7 +355,7 @@ class liquidityPool(BaseAbi):
             "hedgingReactors",
             x_0=x_0
         )
-        
+
     def initiateWithdraw(
         self,
         _shares: uint_e18,
@@ -364,14 +364,14 @@ class liquidityPool(BaseAbi):
             "initiateWithdraw",
             _shares=_shares
         )
-        
+
     def isTradingPaused(
         self,
     ) -> bool:
         return self._call(
             "isTradingPaused"
         )
-        
+
     def keeper(
         self,
         x_0: Address,
@@ -380,28 +380,28 @@ class liquidityPool(BaseAbi):
             "keeper",
             x_0=x_0
         )
-        
+
     def maxPriceDeviationThreshold(
         self,
     ) -> uint_e18:
         return self._call(
             "maxPriceDeviationThreshold"
         )
-        
+
     def maxTimeDeviationThreshold(
         self,
     ) -> uint_e18:
         return self._call(
             "maxTimeDeviationThreshold"
         )
-        
+
     def name(
         self,
     ) -> str:
         return self._call(
             "name"
         )
-        
+
     def nonces(
         self,
         x_0: Address,
@@ -410,35 +410,35 @@ class liquidityPool(BaseAbi):
             "nonces",
             x_0=x_0
         )
-        
+
     def optionParams(
         self,
     ) -> tuple[uint128, uint128, uint128, uint128, uint128, uint128]:
         return self._call(
             "optionParams"
         )
-        
+
     def partitionedFunds(
         self,
     ) -> uint_e18:
         return self._call(
             "partitionedFunds"
         )
-        
+
     def pause(
         self,
     ) -> None:
         self._call(
             "pause"
         )
-        
+
     def pauseTradingAndRequest(
         self,
     ) -> bytes32:
         return self._call(
             "pauseTradingAndRequest"
         )
-        
+
     def pauseUnpauseTrading(
         self,
         _pause: bool,
@@ -447,28 +447,28 @@ class liquidityPool(BaseAbi):
             "pauseUnpauseTrading",
             _pause=_pause
         )
-        
+
     def paused(
         self,
     ) -> bool:
         return self._call(
             "paused"
         )
-        
+
     def pendingDeposits(
         self,
     ) -> uint_e18:
         return self._call(
             "pendingDeposits"
         )
-        
+
     def pendingWithdrawals(
         self,
     ) -> uint_e18:
         return self._call(
             "pendingWithdrawals"
         )
-        
+
     def permit(
         self,
         owner: Address,
@@ -489,14 +489,14 @@ class liquidityPool(BaseAbi):
             r=r,
             s=s
         )
-        
+
     def protocol(
         self,
     ) -> Address:
         return self._call(
             "protocol"
         )
-        
+
     def rebalancePortfolioDelta(
         self,
         delta: int_e18,
@@ -507,7 +507,7 @@ class liquidityPool(BaseAbi):
             delta=delta,
             reactorIndex=reactorIndex
         )
-        
+
     def redeem(
         self,
         _shares: uint_e18,
@@ -516,7 +516,7 @@ class liquidityPool(BaseAbi):
             "redeem",
             _shares=_shares
         )
-        
+
     def removeHedgingReactorAddress(
         self,
         _index: uint_e18,
@@ -527,21 +527,21 @@ class liquidityPool(BaseAbi):
             _index=_index,
             _override=_override
         )
-        
+
     def resetEphemeralValues(
         self,
     ) -> None:
         self._call(
             "resetEphemeralValues"
         )
-        
+
     def riskFreeRate(
         self,
     ) -> uint_e18:
         return self._call(
             "riskFreeRate"
         )
-        
+
     def setAuthority(
         self,
         _newAuthority: Address,
@@ -550,7 +550,7 @@ class liquidityPool(BaseAbi):
             "setAuthority",
             _newAuthority=_newAuthority
         )
-        
+
     def setBufferPercentage(
         self,
         _bufferPercentage: uint_e18,
@@ -559,7 +559,7 @@ class liquidityPool(BaseAbi):
             "setBufferPercentage",
             _bufferPercentage=_bufferPercentage
         )
-        
+
     def setCollateralCap(
         self,
         _collateralCap: uint_e18,
@@ -568,7 +568,7 @@ class liquidityPool(BaseAbi):
             "setCollateralCap",
             _collateralCap=_collateralCap
         )
-        
+
     def setHedgingReactorAddress(
         self,
         _reactorAddress: Address,
@@ -577,7 +577,7 @@ class liquidityPool(BaseAbi):
             "setHedgingReactorAddress",
             _reactorAddress=_reactorAddress
         )
-        
+
     def setKeeper(
         self,
         _keeper: Address,
@@ -588,7 +588,7 @@ class liquidityPool(BaseAbi):
             _keeper=_keeper,
             _auth=_auth
         )
-        
+
     def setMaxPriceDeviationThreshold(
         self,
         _maxPriceDeviationThreshold: uint_e18,
@@ -597,7 +597,7 @@ class liquidityPool(BaseAbi):
             "setMaxPriceDeviationThreshold",
             _maxPriceDeviationThreshold=_maxPriceDeviationThreshold
         )
-        
+
     def setMaxTimeDeviationThreshold(
         self,
         _maxTimeDeviationThreshold: uint_e18,
@@ -606,7 +606,7 @@ class liquidityPool(BaseAbi):
             "setMaxTimeDeviationThreshold",
             _maxTimeDeviationThreshold=_maxTimeDeviationThreshold
         )
-        
+
     def setNewOptionParams(
         self,
         _newMinCallStrike: uint128,
@@ -625,7 +625,7 @@ class liquidityPool(BaseAbi):
             _newMinExpiry=_newMinExpiry,
             _newMaxExpiry=_newMaxExpiry
         )
-        
+
     def setRiskFreeRate(
         self,
         _riskFreeRate: uint_e18,
@@ -634,7 +634,7 @@ class liquidityPool(BaseAbi):
             "setRiskFreeRate",
             _riskFreeRate=_riskFreeRate
         )
-        
+
     def settleVault(
         self,
         seriesAddress: Address,
@@ -643,28 +643,28 @@ class liquidityPool(BaseAbi):
             "settleVault",
             seriesAddress=seriesAddress
         )
-        
+
     def strikeAsset(
         self,
     ) -> Address:
         return self._call(
             "strikeAsset"
         )
-        
+
     def symbol(
         self,
     ) -> str:
         return self._call(
             "symbol"
         )
-        
+
     def totalSupply(
         self,
     ) -> uint_e18:
         return self._call(
             "totalSupply"
         )
-        
+
     def transfer(
         self,
         to_: Address,
@@ -675,7 +675,7 @@ class liquidityPool(BaseAbi):
             to_=to_,
             amount=amount
         )
-        
+
     def transferFrom(
         self,
         from_: Address,
@@ -688,28 +688,28 @@ class liquidityPool(BaseAbi):
             to_=to_,
             amount=amount
         )
-        
+
     def underlyingAsset(
         self,
     ) -> Address:
         return self._call(
             "underlyingAsset"
         )
-        
+
     def unpause(
         self,
     ) -> None:
         self._call(
             "unpause"
         )
-        
+
     def withdrawalEpoch(
         self,
     ) -> uint_e18:
         return self._call(
             "withdrawalEpoch"
         )
-        
+
     def withdrawalEpochPricePerShare(
         self,
         x_0: uint_e18,
@@ -718,7 +718,7 @@ class liquidityPool(BaseAbi):
             "withdrawalEpochPricePerShare",
             x_0=x_0
         )
-        
+
     def withdrawalReceipts(
         self,
         x_0: Address,
@@ -727,4 +727,3 @@ class liquidityPool(BaseAbi):
             "withdrawalReceipts",
             x_0=x_0
         )
-    

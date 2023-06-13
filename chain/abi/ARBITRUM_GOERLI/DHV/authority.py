@@ -5,24 +5,24 @@ from chain.abi.codegen import BaseAbi
 from dataclasses import dataclass
 
 
-        
+
 class authority(BaseAbi):
     address: Address = Address("0x68256a51a6777129968b88bd21b6f657eCE8B0E6")
-    
+
     def authority(
         self,
     ) -> Address:
         return self._call(
             "authority"
         )
-        
+
     def governor(
         self,
     ) -> Address:
         return self._call(
             "governor"
         )
-        
+
     def guardian(
         self,
         x_0: Address,
@@ -31,42 +31,42 @@ class authority(BaseAbi):
             "guardian",
             x_0=x_0
         )
-        
+
     def manager(
         self,
     ) -> Address:
         return self._call(
             "manager"
         )
-        
+
     def newGovernor(
         self,
     ) -> Address:
         return self._call(
             "newGovernor"
         )
-        
+
     def newManager(
         self,
     ) -> Address:
         return self._call(
             "newManager"
         )
-        
+
     def pullGovernor(
         self,
     ) -> None:
         self._call(
             "pullGovernor"
         )
-        
+
     def pullManager(
         self,
     ) -> None:
         self._call(
             "pullManager"
         )
-        
+
     def pushGovernor(
         self,
         _newGovernor: Address,
@@ -75,7 +75,7 @@ class authority(BaseAbi):
             "pushGovernor",
             _newGovernor=_newGovernor
         )
-        
+
     def pushGuardian(
         self,
         _newGuardian: Address,
@@ -84,7 +84,7 @@ class authority(BaseAbi):
             "pushGuardian",
             _newGuardian=_newGuardian
         )
-        
+
     def pushManager(
         self,
         _newManager: Address,
@@ -93,7 +93,7 @@ class authority(BaseAbi):
             "pushManager",
             _newManager=_newManager
         )
-        
+
     def revokeGuardian(
         self,
         _guardian: Address,
@@ -102,7 +102,7 @@ class authority(BaseAbi):
             "revokeGuardian",
             _guardian=_guardian
         )
-        
+
     def setAuthority(
         self,
         _newAuthority: Address,
@@ -111,4 +111,3 @@ class authority(BaseAbi):
             "setAuthority",
             _newAuthority=_newAuthority
         )
-    

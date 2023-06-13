@@ -5,7 +5,7 @@ from chain.abi.codegen import BaseAbi
 from dataclasses import dataclass
 
 
-        
+
 @dataclass
 class Types_OptionSeries:
     expiration: uint64
@@ -17,14 +17,14 @@ class Types_OptionSeries:
 
 class OpynOptionRegistry(BaseAbi):
     address: Address = Address("0x4E89cc3215AF050Ceb63Ca62470eeC7C1A66F737")
-    
+
     def addressBook(
         self,
     ) -> Address:
         return self._call(
             "addressBook"
         )
-        
+
     def adjustCollateral(
         self,
         vaultId: uint_e18,
@@ -33,7 +33,7 @@ class OpynOptionRegistry(BaseAbi):
             "adjustCollateral",
             vaultId=vaultId
         )
-        
+
     def adjustCollateralCaller(
         self,
         vaultId: uint_e18,
@@ -42,28 +42,28 @@ class OpynOptionRegistry(BaseAbi):
             "adjustCollateralCaller",
             vaultId=vaultId
         )
-        
+
     def authority(
         self,
     ) -> Address:
         return self._call(
             "authority"
         )
-        
+
     def callLowerHealthFactor(
         self,
     ) -> uint64:
         return self._call(
             "callLowerHealthFactor"
         )
-        
+
     def callUpperHealthFactor(
         self,
     ) -> uint64:
         return self._call(
             "callUpperHealthFactor"
         )
-        
+
     def checkVaultHealth(
         self,
         vaultId: uint_e18,
@@ -72,7 +72,7 @@ class OpynOptionRegistry(BaseAbi):
             "checkVaultHealth",
             vaultId=vaultId
         )
-        
+
     def close(
         self,
         _series: Address,
@@ -83,14 +83,14 @@ class OpynOptionRegistry(BaseAbi):
             _series=_series,
             amount=amount
         )
-        
+
     def collateralAsset(
         self,
     ) -> Address:
         return self._call(
             "collateralAsset"
         )
-        
+
     def getCollateral(
         self,
         series: Types_OptionSeries,
@@ -101,7 +101,7 @@ class OpynOptionRegistry(BaseAbi):
             series=series,
             amount=amount
         )
-        
+
     def getIssuanceHash(
         self,
         _series: Types_OptionSeries,
@@ -110,7 +110,7 @@ class OpynOptionRegistry(BaseAbi):
             "getIssuanceHash",
             _series=_series
         )
-        
+
     def getOtoken(
         self,
         underlying: Address,
@@ -129,7 +129,7 @@ class OpynOptionRegistry(BaseAbi):
             strike=strike,
             collateral=collateral
         )
-        
+
     def getSeries(
         self,
         _series: Types_OptionSeries,
@@ -138,7 +138,7 @@ class OpynOptionRegistry(BaseAbi):
             "getSeries",
             _series=_series
         )
-        
+
     def getSeriesAddress(
         self,
         issuanceHash: bytes32,
@@ -147,7 +147,7 @@ class OpynOptionRegistry(BaseAbi):
             "getSeriesAddress",
             issuanceHash=issuanceHash
         )
-        
+
     def getSeriesInfo(
         self,
         series: Address,
@@ -156,7 +156,7 @@ class OpynOptionRegistry(BaseAbi):
             "getSeriesInfo",
             series=series
         )
-        
+
     def issue(
         self,
         optionSeries: Types_OptionSeries,
@@ -165,7 +165,7 @@ class OpynOptionRegistry(BaseAbi):
             "issue",
             optionSeries=optionSeries
         )
-        
+
     def keeper(
         self,
         x_0: Address,
@@ -174,14 +174,14 @@ class OpynOptionRegistry(BaseAbi):
             "keeper",
             x_0=x_0
         )
-        
+
     def liquidityPool(
         self,
     ) -> Address:
         return self._call(
             "liquidityPool"
         )
-        
+
     def open(
         self,
         _series: Address,
@@ -194,21 +194,21 @@ class OpynOptionRegistry(BaseAbi):
             amount=amount,
             collateralAmount=collateralAmount
         )
-        
+
     def putLowerHealthFactor(
         self,
     ) -> uint64:
         return self._call(
             "putLowerHealthFactor"
         )
-        
+
     def putUpperHealthFactor(
         self,
     ) -> uint64:
         return self._call(
             "putUpperHealthFactor"
         )
-        
+
     def redeem(
         self,
         _series: Address,
@@ -217,7 +217,7 @@ class OpynOptionRegistry(BaseAbi):
             "redeem",
             _series=_series
         )
-        
+
     def registerLiquidatedVault(
         self,
         vaultId: uint_e18,
@@ -226,7 +226,7 @@ class OpynOptionRegistry(BaseAbi):
             "registerLiquidatedVault",
             vaultId=vaultId
         )
-        
+
     def seriesInfo(
         self,
         x_0: Address,
@@ -235,7 +235,7 @@ class OpynOptionRegistry(BaseAbi):
             "seriesInfo",
             x_0=x_0
         )
-        
+
     def setAuthority(
         self,
         _newAuthority: Address,
@@ -244,7 +244,7 @@ class OpynOptionRegistry(BaseAbi):
             "setAuthority",
             _newAuthority=_newAuthority
         )
-        
+
     def setHealthThresholds(
         self,
         _putLower: uint64,
@@ -259,7 +259,7 @@ class OpynOptionRegistry(BaseAbi):
             _callLower=_callLower,
             _callUpper=_callUpper
         )
-        
+
     def setKeeper(
         self,
         _target: Address,
@@ -270,7 +270,7 @@ class OpynOptionRegistry(BaseAbi):
             _target=_target,
             _auth=_auth
         )
-        
+
     def setLiquidityPool(
         self,
         _newLiquidityPool: Address,
@@ -279,7 +279,7 @@ class OpynOptionRegistry(BaseAbi):
             "setLiquidityPool",
             _newLiquidityPool=_newLiquidityPool
         )
-        
+
     def setOperator(
         self,
         _operator: Address,
@@ -290,7 +290,7 @@ class OpynOptionRegistry(BaseAbi):
             _operator=_operator,
             _isOperator=_isOperator
         )
-        
+
     def setSeriesInfoAndAddress(
         self,
         _optionSeries: Types_OptionSeries,
@@ -303,7 +303,7 @@ class OpynOptionRegistry(BaseAbi):
             _seriesAddress=_seriesAddress,
             _issuanceHash=_issuanceHash
         )
-        
+
     def setVaultIds(
         self,
         _seriesAddress: Address,
@@ -314,7 +314,7 @@ class OpynOptionRegistry(BaseAbi):
             _seriesAddress=_seriesAddress,
             _id=_id
         )
-        
+
     def settle(
         self,
         _series: Address,
@@ -323,14 +323,14 @@ class OpynOptionRegistry(BaseAbi):
             "settle",
             _series=_series
         )
-        
+
     def vaultCount(
         self,
     ) -> uint64:
         return self._call(
             "vaultCount"
         )
-        
+
     def vaultIds(
         self,
         x_0: Address,
@@ -339,7 +339,7 @@ class OpynOptionRegistry(BaseAbi):
             "vaultIds",
             x_0=x_0
         )
-        
+
     def wCollatLiquidatedVault(
         self,
         vaultId: uint_e18,
@@ -348,4 +348,3 @@ class OpynOptionRegistry(BaseAbi):
             "wCollatLiquidatedVault",
             vaultId=vaultId
         )
-    

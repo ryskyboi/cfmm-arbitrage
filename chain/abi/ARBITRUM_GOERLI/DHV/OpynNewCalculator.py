@@ -5,7 +5,7 @@ from chain.abi.codegen import BaseAbi
 from dataclasses import dataclass
 
 
-
+        
 @dataclass
 class MarginVault_Vault:
     shortOtokens: list[Address]
@@ -21,21 +21,21 @@ class FixedPointInt256_FixedPointInt:
 
 class OpynNewCalculator(BaseAbi):
     address: Address = Address("0xcD270e755C2653e806e16dD3f78E16C89B7a1c9e")
-
+    
     def AUCTION_TIME(
         self,
     ) -> uint_e18:
         return self._call(
             "AUCTION_TIME"
         )
-
+        
     def addressBook(
         self,
     ) -> Address:
         return self._call(
             "addressBook"
         )
-
+        
     def getCollateralDust(
         self,
         _collateral: Address,
@@ -44,7 +44,7 @@ class OpynNewCalculator(BaseAbi):
             "getCollateralDust",
             _collateral=_collateral
         )
-
+        
     def getExcessCollateral(
         self,
         _vault: MarginVault_Vault,
@@ -55,7 +55,7 @@ class OpynNewCalculator(BaseAbi):
             _vault=_vault,
             _vaultType=_vaultType
         )
-
+        
     def getExpiredPayoutRate(
         self,
         _otoken: Address,
@@ -64,7 +64,7 @@ class OpynNewCalculator(BaseAbi):
             "getExpiredPayoutRate",
             _otoken=_otoken
         )
-
+        
     def getMarginRequired(
         self,
         _vault: MarginVault_Vault,
@@ -75,7 +75,7 @@ class OpynNewCalculator(BaseAbi):
             _vault=_vault,
             _vaultType=_vaultType
         )
-
+        
     def getMaxPrice(
         self,
         _underlying: Address,
@@ -92,7 +92,7 @@ class OpynNewCalculator(BaseAbi):
             _isPut=_isPut,
             _timeToExpiry=_timeToExpiry
         )
-
+        
     def getNakedMarginRequired(
         self,
         _underlying: Address,
@@ -117,14 +117,14 @@ class OpynNewCalculator(BaseAbi):
             _collateralDecimals=_collateralDecimals,
             _isPut=_isPut
         )
-
+        
     def getOracleDeviation(
         self,
     ) -> uint_e18:
         return self._call(
             "getOracleDeviation"
         )
-
+        
     def getSpotShock(
         self,
         _underlying: Address,
@@ -139,7 +139,7 @@ class OpynNewCalculator(BaseAbi):
             _collateral=_collateral,
             _isPut=_isPut
         )
-
+        
     def getTimesToExpiry(
         self,
         _underlying: Address,
@@ -154,7 +154,7 @@ class OpynNewCalculator(BaseAbi):
             _collateral=_collateral,
             _isPut=_isPut
         )
-
+        
     def isLiquidatable(
         self,
         _vault: MarginVault_Vault,
@@ -165,35 +165,35 @@ class OpynNewCalculator(BaseAbi):
             _vault=_vault,
             _vaultType=_vaultType
         )
-
+        
     def liquidationMultiplier(
         self,
     ) -> uint_e18:
         return self._call(
             "liquidationMultiplier"
         )
-
+        
     def oracle(
         self,
     ) -> Address:
         return self._call(
             "oracle"
         )
-
+        
     def owner(
         self,
     ) -> Address:
         return self._call(
             "owner"
         )
-
+        
     def renounceOwnership(
         self,
     ) -> None:
         self._call(
             "renounceOwnership"
         )
-
+        
     def setCollateralDust(
         self,
         _collateral: Address,
@@ -204,7 +204,7 @@ class OpynNewCalculator(BaseAbi):
             _collateral=_collateral,
             _dust=_dust
         )
-
+        
     def setLiquidationMultiplier(
         self,
         _liquidationMultiplier: uint_e18,
@@ -213,7 +213,7 @@ class OpynNewCalculator(BaseAbi):
             "setLiquidationMultiplier",
             _liquidationMultiplier=_liquidationMultiplier
         )
-
+        
     def setOracleDeviation(
         self,
         _deviation: uint_e18,
@@ -222,7 +222,7 @@ class OpynNewCalculator(BaseAbi):
             "setOracleDeviation",
             _deviation=_deviation
         )
-
+        
     def setSpotShock(
         self,
         _underlying: Address,
@@ -239,7 +239,7 @@ class OpynNewCalculator(BaseAbi):
             _isPut=_isPut,
             _shockValue=_shockValue
         )
-
+        
     def setUpperBoundValues(
         self,
         _underlying: Address,
@@ -258,7 +258,7 @@ class OpynNewCalculator(BaseAbi):
             _timesToExpiry=_timesToExpiry,
             _values=_values
         )
-
+        
     def transferOwnership(
         self,
         newOwner: Address,
@@ -267,7 +267,7 @@ class OpynNewCalculator(BaseAbi):
             "transferOwnership",
             newOwner=newOwner
         )
-
+        
     def updateUpperBoundValue(
         self,
         _underlying: Address,
@@ -286,3 +286,4 @@ class OpynNewCalculator(BaseAbi):
             _timeToExpiry=_timeToExpiry,
             _value=_value
         )
+    

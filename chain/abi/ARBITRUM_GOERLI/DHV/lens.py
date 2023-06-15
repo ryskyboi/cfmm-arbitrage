@@ -5,7 +5,7 @@ from chain.abi.codegen import BaseAbi
 from dataclasses import dataclass
 
 
-
+        
 @dataclass
 class DHVLensMK1_TradingSpec:
     iv: uint_e18
@@ -38,35 +38,35 @@ class DHVLensMK1_OptionChain:
 
 class lens(BaseAbi):
     address: Address = Address("0xe1805262E848945C8E545D1F82809Ba5bc5Ad7c0")
-
+    
     def catalogue(
         self,
     ) -> Address:
         return self._call(
             "catalogue"
         )
-
+        
     def collateralAsset(
         self,
     ) -> Address:
         return self._call(
             "collateralAsset"
         )
-
+        
     def getExpirations(
         self,
     ) -> list[uint64]:
         return self._call(
             "getExpirations"
         )
-
+        
     def getOptionChain(
         self,
     ) -> DHVLensMK1_OptionChain:
         return self._call(
             "getOptionChain"
         )
-
+        
     def getOptionExpirationDrill(
         self,
         expiration: uint64,
@@ -75,31 +75,32 @@ class lens(BaseAbi):
             "getOptionExpirationDrill",
             expiration=expiration
         )
-
+        
     def pricer(
         self,
     ) -> Address:
         return self._call(
             "pricer"
         )
-
+        
     def protocol(
         self,
     ) -> Address:
         return self._call(
             "protocol"
         )
-
+        
     def strikeAsset(
         self,
     ) -> Address:
         return self._call(
             "strikeAsset"
         )
-
+        
     def underlyingAsset(
         self,
     ) -> Address:
         return self._call(
             "underlyingAsset"
         )
+    

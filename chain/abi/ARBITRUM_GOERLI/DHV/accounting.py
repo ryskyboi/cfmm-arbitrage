@@ -5,7 +5,7 @@ from chain.abi.codegen import BaseAbi
 from dataclasses import dataclass
 
 
-
+        
 @dataclass
 class IAccounting_WithdrawalReceipt:
     epoch: uint128
@@ -19,7 +19,7 @@ class IAccounting_DepositReceipt:
 
 class accounting(BaseAbi):
     address: Address = Address("0x8339B6AB2B573F0acdb43F9DD00f290A07aA8708")
-
+    
     def amountForShares(
         self,
         _shares: uint_e18,
@@ -30,14 +30,14 @@ class accounting(BaseAbi):
             _shares=_shares,
             _assetPerShare=_assetPerShare
         )
-
+        
     def collateralAsset(
         self,
     ) -> Address:
         return self._call(
             "collateralAsset"
         )
-
+        
     def completeWithdraw(
         self,
         withdrawer: Address,
@@ -46,7 +46,7 @@ class accounting(BaseAbi):
             "completeWithdraw",
             withdrawer=withdrawer
         )
-
+        
     def deposit(
         self,
         depositor: Address,
@@ -57,7 +57,7 @@ class accounting(BaseAbi):
             depositor=depositor,
             _amount=_amount
         )
-
+        
     def executeEpochCalculation(
         self,
         totalSupply: uint_e18,
@@ -70,7 +70,7 @@ class accounting(BaseAbi):
             assets=assets,
             liabilities=liabilities
         )
-
+        
     def initiateWithdraw(
         self,
         withdrawer: Address,
@@ -81,14 +81,14 @@ class accounting(BaseAbi):
             withdrawer=withdrawer,
             shares=shares
         )
-
+        
     def liquidityPool(
         self,
     ) -> Address:
         return self._call(
             "liquidityPool"
         )
-
+        
     def redeem(
         self,
         redeemer: Address,
@@ -99,7 +99,7 @@ class accounting(BaseAbi):
             redeemer=redeemer,
             shares=shares
         )
-
+        
     def sharesForAmount(
         self,
         _amount: uint_e18,
@@ -110,17 +110,18 @@ class accounting(BaseAbi):
             _amount=_amount,
             assetPerShare=assetPerShare
         )
-
+        
     def strikeAsset(
         self,
     ) -> Address:
         return self._call(
             "strikeAsset"
         )
-
+        
     def underlyingAsset(
         self,
     ) -> Address:
         return self._call(
             "underlyingAsset"
         )
+    

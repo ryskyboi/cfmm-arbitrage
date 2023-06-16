@@ -42,7 +42,8 @@ class SabrExpiryParams:
 
 
 class DhvChainReader(ChainReader):
-    def __init__(self, chain_def: ChainDefinition, web3_endpoint: Web3Endpoint, abi_manager: AbiManager):
+    def __init__(self, chain_def: ChainDefinition,
+                 web3_endpoint: Web3Endpoint, abi_manager: AbiManager):
         super().__init__(chain_def, web3_endpoint, abi_manager)
         self.protocol_def = "DHV"
         self._vol_feed: volFeed = self._contract(volFeed)
@@ -55,7 +56,8 @@ class DhvChainReader(ChainReader):
         List of expiries (optionally include expired ones) as timestamps, in (int) seconds.
         :return:
         """
-        return [t for t in self._vol_feed.getExpiries() if t > int(dt.now().timestamp()) or is_include_expired]
+        return [t for t in self._vol_feed.getExpiries()
+                if t > int(dt.now().timestamp()) or is_include_expired]
 
     def sabr_param_data(self, is_include_expired=False) -> list[SabrExpiryParams]:
         """
@@ -90,11 +92,11 @@ class DhvChainReader(ChainReader):
 
         Returns:
             SpreadParams: a dataclass with 3 sub-dataclasses
-            feeivspreadparsms contains a fee per contract a relative myltiplier that allows us to pay less in
-            IV than we buy it for
+            feeivspreadparsms contains a fee per contract a relative myltiplier
+             that allows us to pay less in IV than we buy it for
             collat_spread_params contains the rate paid on collat that the DHV has to lock up
-            delta_spread_params contains 4 rates charged when buying/sellig calls and puts and their related
-            hedging activities
+            delta_spread_params contains 4 rates charged when buying/sellig
+            calls and puts and their related hedging activities
         """
 
         collat_lending_rate = self._beyond_pricer.collateralLendingRate()
@@ -115,7 +117,8 @@ class DhvChainReader(ChainReader):
                             delta_spread_params)
 
     def position_data(self) -> Positions:
-        """_This takes the current positions that we have on chain and converts them to a nested dict
+        """This takes the current positions that we
+        have on chain and converts them to a nested dict
 
         Returns:
             Positions: is_call -> expiry -> strike -> position
@@ -143,12 +146,18 @@ class DhvChainReader(ChainReader):
         USDC_ADDRESS = usdc.address
         WETH_ADDRESS = weth.address
         collat = USDC_ADDRESS if isUSDCcollateral else WETH_ADDRESS
-        call_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(WETH_ADDRESS, USDC_ADDRESS, collat, False))
-        put_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(WETH_ADDRESS, USDC_ADDRESS, collat, True))
-        times_to_exp_calls = self._opyn_calculator.getTimesToExpiry(WETH_ADDRESS, USDC_ADDRESS, collat, False)
-        times_to_exp_puts = self._opyn_calculator.getTimesToExpiry(WETH_ADDRESS, USDC_ADDRESS, collat, True)
-        max_prices_calls = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(WETH_ADDRESS, USDC_ADDRESS, collat, False, t)) for t in times_to_exp_calls]
-        max_prices_puts = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(WETH_ADDRESS, USDC_ADDRESS, collat, True, t)) for t in times_to_exp_puts]
+        call_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(
+            WETH_ADDRESS, USDC_ADDRESS, collat, False))
+        put_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(
+            WETH_ADDRESS, USDC_ADDRESS, collat, True))
+        times_to_exp_calls = self._opyn_calculator.getTimesToExpiry(
+            WETH_ADDRESS, USDC_ADDRESS, collat, False)
+        times_to_exp_puts = self._opyn_calculator.getTimesToExpiry(
+            WETH_ADDRESS, USDC_ADDRESS, collat, True)
+        max_prices_calls = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(
+            WETH_ADDRESS, USDC_ADDRESS, collat, False, t)) for t in times_to_exp_calls]
+        max_prices_puts = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(
+            WETH_ADDRESS, USDC_ADDRESS, collat, True, t)) for t in times_to_exp_puts]
         return CollateralParams(call_spot_shock,
                                 dict(zip([t/(60*60*24) for t in times_to_exp_calls], max_prices_calls)),
                                 put_spot_shock,
@@ -164,6 +173,8 @@ class DhvChainReader(ChainReader):
         call_slippage_gradient_multipliers = self._beyond_pricer.getCallSlippageGradientMultipliers()
         put_slippage_gradient_multipliers = self._beyond_pricer.getPutSlippageGradientMultipliers()
         slippage_gradient = self._beyond_pricer.slippageGradient()
-        return SlippageParams([cast_e18_to_float(multiplier) for multiplier in put_slippage_gradient_multipliers],
-                              [cast_e18_to_float(multiplier) for multiplier in call_slippage_gradient_multipliers],
+        return SlippageParams([cast_e18_to_float(multiplier) for multiplier
+                               in put_slippage_gradient_multipliers],
+                              [cast_e18_to_float(multiplier) for multiplier
+                               in call_slippage_gradient_multipliers],
                               cast_e18_to_float(slippage_gradient))

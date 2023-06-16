@@ -3,7 +3,6 @@ from chain.config import Config
 from chain.api.dhv import DhvChainReader
 from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams,\
     DeltaSpreadParams, SpreadParams
-from chain.api.dhv.positions import Positions
 from chain.api.dhv.collatparams import CollateralParams
 from chain.api.dhv.slippageparams import SlippageParams
 

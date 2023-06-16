@@ -224,7 +224,6 @@ class TestDhvChainReader(TestCase):
         self.assertTrue(FindDiff(positions, chain_reader.position_data()),
                         "... position fail")
 
-
         #sabr
         sab = [SabrExpiryParams(0, SabrModelParam( a, b, p, n),SabrModelParam( a, b, p, n),float(r))]
 

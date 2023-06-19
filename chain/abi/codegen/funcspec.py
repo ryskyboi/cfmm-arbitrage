@@ -5,6 +5,9 @@ from dataclass_wizard import JSONWizard
 from chain.abi.codegen.varspec import VarSpec
 
 
+# TODO: FuncSpec should create object from tuple before returning.
+# TODO: see getOptionChain
+
 @dataclass
 class FuncSpec(JSONWizard):
     inputs: list[VarSpec]

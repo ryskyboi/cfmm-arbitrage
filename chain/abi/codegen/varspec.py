@@ -51,6 +51,13 @@ def validate_var_name(var_name: str):
     return var_name
 
 
+def build_from_list_tuple_call(type_name: str, arg: str, stack:int=0) -> str:
+    if type_name[:5] != "list[":
+        return f"{type_name}.from_tuple({arg})"
+    inner_type_name = type_name[5:-1]
+    arg_i = f"arg_{stack}"
+    return f"[{build_from_list_tuple_call(inner_type_name, arg_i, stack+1)} for {arg_i} in {arg}]"
+
 @dataclass
 class VarSpec(JSONWizard):
     internal_type: str
@@ -79,8 +86,26 @@ class VarSpec(JSONWizard):
         for i, component in enumerate(self.components):
             component.enrich_names(f"{stem_name}_{i}")
 
-    def type_name(self):
+    def type_name(self) -> str:
         return build_type(self.type, self.internal_type)
+
+    def generate_from_tuple_call(self, args: str) -> str:
+
+        from_tuple_call = f"{self.type_name()}.from_tuple({args})"
+    def generate_from_tuple_method(self) -> str:
+        from_tuple_args = ""
+        component: VarSpec
+        for i, component in enumerate(self.components):
+            from_tuple_args += f"""
+            {component.}
+"""
+        from_tuple = f"""
+    @staticmethod
+    def from_tuple(cls: Type[Self], args: tuple) -> Self:
+        return cls(
+            {from_tuple_args}
+        )
+"""
 
     def generate_variable_source(self, class_definitions: list[str]) -> str:
         if self.type[:5] == "tuple":
@@ -89,10 +114,14 @@ class VarSpec(JSONWizard):
 @dataclass
 class {class_name}:"""
             component: VarSpec
+            from_tuple_args = ""
             for component in self.components:
                 class_definition += f"""
     {component.generate_variable_source(class_definitions)}"""
-            class_definition += """
+                from_tuple_args += f"""
+            {component.type_name()}
+"""
+            class_definition += f"""
 """
             class_definitions.append(class_definition)
         return f"{self.name}: {self.type_name()}"

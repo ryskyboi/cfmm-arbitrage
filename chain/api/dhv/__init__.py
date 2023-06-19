@@ -1,16 +1,15 @@
-from dataclasses import dataclass
 from datetime import datetime as dt
-from collections import defaultdict
 
 from chain.abi import AbiManager
 from chain.abi.types import cast_e6_to_float, cast_e18_to_float, cast_e27_to_float
+from chain.api.dhv.sabrparams import SabrModelParam, SabrExpiryParams
 from chain.api.reader import ChainReader
 from chain.chains import ChainDefinition
 from chain.web3_api import Web3Endpoint
 
 from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams,\
     DeltaSpreadParams
-from chain.api.dhv.positions import Positions, Position
+from chain.api.dhv.positions import OptionPosition
 from chain.api.dhv.collatparams import CollateralParams
 from chain.api.dhv.slippageparams import SlippageParams
 
@@ -22,20 +21,6 @@ from chain.abi.ARBITRUM_GOERLI.DHV.OpynNewCalculator import OpynNewCalculator
 ##Testnet token contracts
 from chain.abi.ARBITRUM_GOERLI.DHV.weth import weth
 from chain.abi.ARBITRUM_GOERLI.DHV.usdc import usdc
-
-@dataclass
-class SabrModelParam:
-    alpha: float
-    beta: float
-    rho: float
-    nu: float
-
-@dataclass
-class SabrExpiryParams:
-    expiry_timestamp_s: float
-    call_sabr: SabrModelParam
-    put_sabr: SabrModelParam
-    rate: float
 
 
 class DhvChainReader(ChainReader):
@@ -84,28 +69,27 @@ class DhvChainReader(ChainReader):
             )
         return sabrs
 
-    def position_data(self) -> Positions:
-        """This takes the current positions that we
-        have on chain and converts them to a nested dict
-
-        Returns:
-            A list of position objects
-            where position is (expiry_timestamp_s, is_call, strike, position)
+    def position_data(self) -> list[OptionPosition]:
         """
-        _position_data : Positions = []
-        option_chain : DHVLensMK1_OptionChain = self._lens.getOptionChain()
-        #expirations = option_chain[0]
+        All open option positions in the DHV
+        :return: list of OptionPosition objects.
+        """
+        _position_data : list[OptionPosition] = []
+        # TODO: _lens.getOptionChain() is buggy
+        option_chain = self._lens.getOptionChain()
         data = option_chain[1]
         for _by_expiration in data:
             expiry = _by_expiration[0]
             for _by_strike_calls in _by_expiration[2]:
                 strike = cast_e18_to_float(_by_strike_calls[0])
-                _position_data.append(Position(expiry, True, strike,
-                                               cast_e18_to_float(_by_strike_calls[4])))
+                _position_data.append(
+                    OptionPosition(expiry, True, strike, cast_e18_to_float(_by_strike_calls[4]))
+                )
             for _by_strike_puts in _by_expiration[4]:
                 strike = cast_e18_to_float(_by_strike_puts[0])
-                _position_data.append(Position(expiry, False, strike,
-                                               cast_e18_to_float(_by_strike_puts[4])))
+                _position_data.append(
+                    OptionPosition(expiry, False, strike, cast_e18_to_float(_by_strike_puts[4]))
+                )
         return _position_data
 
     def collat_param_data(self, is_usd_collateral: bool = False) -> CollateralParams:

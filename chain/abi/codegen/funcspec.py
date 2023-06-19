@@ -33,20 +33,32 @@ def {self.name}(
             func_def += f"""
     {i.generate_variable_source(class_definitions)},"""
         return_type: str
+        call_code = f"""self._call(
+        "{self.name}"{kwargs}
+    )"""
+        return_code = ""
         if not len(self.outputs):
             return_type = "None"
         else:
-            for o in self.outputs:
+            j: int
+            my_vars: list[str] = []
+            my_calcs: list[str] = []
+            for j, o in enumerate(self.outputs):
+                my_var = f"my_var_{j}"
+                my_vars.append(my_var)
                 # capture class definitions
                 o.generate_variable_source(class_definitions)
+                my_calcs.append(o.generate_from_tuple_call(my_var))
             return_type = ", ".join([o.type_name() for o in self.outputs])
             if len(self.outputs) > 1:
                 return_type = f"tuple[{return_type}]"
+            call_code = f"{', '.join(my_vars)} = {call_code}"
+            return_code = "return " + ", ".join(my_calcs)
         func_def += f"""
 ) -> {return_type}:
-    {"" if return_type == "None" else "return "}self._call(
-        "{self.name}"{kwargs}
-    )
+    {call_code}"""
+        if return_code:
+            func_def += f"""
+    {return_code}"""
+        return func_def + """
 """
-
-        return func_def

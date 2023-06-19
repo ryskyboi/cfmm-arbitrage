@@ -19,10 +19,10 @@ _TYPE_LOOKUP = {
     "int256": int_e18,
     "int32": int_e6,
     "bool": bool,
-    "address": Address,
-    "bytes": bytes,
+    "address": BaseAddress,
+    "bytes": BaseBytes,
     "bytes32": bytes32,
-    "string": str
+    "string": BaseStr
 }
 
 
@@ -52,6 +52,8 @@ def validate_var_name(var_name: str):
 
 
 def build_from_list_tuple_call(type_name: str, arg: str, stack:int=0) -> str:
+    if type_name == "bool":
+        return f"bool({arg})"
     if type_name[:5] != "list[":
         return f"{type_name}.from_tuple({arg})"
     inner_type_name = type_name[5:-1]
@@ -90,22 +92,21 @@ class VarSpec(JSONWizard):
         return build_type(self.type, self.internal_type)
 
     def generate_from_tuple_call(self, args: str) -> str:
+        return build_from_list_tuple_call(self.type_name(), args)
 
-        from_tuple_call = f"{self.type_name()}.from_tuple({args})"
     def generate_from_tuple_method(self) -> str:
         from_tuple_args = ""
         component: VarSpec
         for i, component in enumerate(self.components):
             from_tuple_args += f"""
-            {component.}
-"""
+            {component.generate_from_tuple_call(f"args[{i}]")},"""
         from_tuple = f"""
-    @staticmethod
+    @classmethod
     def from_tuple(cls: Type[Self], args: tuple) -> Self:
-        return cls(
-            {from_tuple_args}
+        return cls({from_tuple_args}
         )
 """
+        return from_tuple
 
     def generate_variable_source(self, class_definitions: list[str]) -> str:
         if self.type[:5] == "tuple":
@@ -122,6 +123,8 @@ class {class_name}:"""
             {component.type_name()}
 """
             class_definition += f"""
+{self.generate_from_tuple_method()}
+
 """
             class_definitions.append(class_definition)
         return f"{self.name}: {self.type_name()}"

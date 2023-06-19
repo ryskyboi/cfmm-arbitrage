@@ -1,13 +1,12 @@
 from unittest import TestCase
 from datetime import datetime as dt
-from chain.api.dhv import DhvChainReader
+from chain.api.dhv import DhvChainReader, SabrModelParam, SabrExpiryParams
 from chain.api.reader import ChainReader
 from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams,\
     DeltaSpreadParams
-from chain.api.dhv.positions import Positions, Position
+from chain.api.dhv.positions import Positions, OptionPosition
 from chain.api.dhv.collatparams import CollateralParams
 from chain.api.dhv.slippageparams import SlippageParams
-from chain.api.dhv import SabrExpiryParams, SabrModelParam
 from chain.config import Config
 
 def test_config() -> Config:
@@ -91,42 +90,42 @@ putPremiumCurve = {
     84.0: 0.5301302667777277
 }
 #Positions
-positions = [Position(expiry_timestamp_s=1688112000, is_call=True, strike=1700.0, position=-144.3),
-             Position(expiry_timestamp_s=1688112000, is_call=True, strike=1800.0, position=77.0),
-             Position(expiry_timestamp_s=1688112000, is_call=True, strike=1900.0, position=-185.67),
-             Position(expiry_timestamp_s=1688112000, is_call=True, strike=2000.0, position=-231.64),
-             Position(expiry_timestamp_s=1688112000, is_call=True, strike=2100.0, position=-488.46),
-             Position(expiry_timestamp_s=1688112000, is_call=True, strike=2200.0, position=-499.9),
-             Position(expiry_timestamp_s=1688112000, is_call=True, strike=1600.0, position=0.0),
-             Position(expiry_timestamp_s=1688112000, is_call=True, strike=1500.0, position=0.0),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=1700.0,
-                      position=-195.75321988752353),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=1800.0, position=-159.0),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=1900.0, position=-28.09),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=2000.0, position=-6.54),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=2100.0, position=0.0),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=2200.0, position=0.0),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=1600.0,
-                      position=-246.21470804373016),
-             Position(expiry_timestamp_s=1688112000, is_call=False, strike=1500.0, position=-393.5),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=1700.0, position=0.0),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=1750.0, position=0.0),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=1800.0, position=-30.0),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=1850.0, position=-100.0),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=1900.0, position=-100.0),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=1950.0, position=-216.58),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=2000.0, position=-350.42),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=2050.0, position=0.0),
-             Position(expiry_timestamp_s=1687507200, is_call=True, strike=2100.0, position=0.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=1700.0, position=-100.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=1750.0, position=-100.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=1800.0, position=-100.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=1850.0, position=-100.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=1900.0, position=-18.5),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=1950.0, position=0.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=2000.0, position=0.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=2050.0, position=0.0),
-             Position(expiry_timestamp_s=1687507200, is_call=False, strike=2100.0, position=0.0)]
+positions = [OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=1700.0, position=-144.3),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=1800.0, position=77.0),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=1900.0, position=-185.67),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=2000.0, position=-231.64),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=2100.0, position=-488.46),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=2200.0, position=-499.9),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=1600.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=True, strike=1500.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=1700.0,
+                            position=-195.75321988752353),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=1800.0, position=-159.0),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=1900.0, position=-28.09),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=2000.0, position=-6.54),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=2100.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=2200.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=1600.0,
+                            position=-246.21470804373016),
+             OptionPosition(expiry_timestamp_s=1688112000, is_call=False, strike=1500.0, position=-393.5),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=1700.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=1750.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=1800.0, position=-30.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=1850.0, position=-100.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=1900.0, position=-100.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=1950.0, position=-216.58),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=2000.0, position=-350.42),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=2050.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=True, strike=2100.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=1700.0, position=-100.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=1750.0, position=-100.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=1800.0, position=-100.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=1850.0, position=-100.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=1900.0, position=-18.5),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=1950.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=2000.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=2050.0, position=0.0),
+             OptionPosition(expiry_timestamp_s=1687507200, is_call=False, strike=2100.0, position=0.0)]
 
 #This doesn't conform to PEP8 but trying to make it look reasonableis taking ages
 positions_from_chain = ([1688112000, 1686902400, 1687507200], [(1688112000, [1700000000000000000000, 1800000000000000000000, 1900000000000000000000, 2000000000000000000000, 2100000000000000000000, 2200000000000000000000, 1600000000000000000000, 1500000000000000000000], [(1700000000000000000000, (388810010046517632, 40670661, 500000, False, False), (388810010046517632, 42197129, 500000, False, False), 329973294863885191, -144300000000000000000), (1800000000000000000000, (417629055969792378, 7279166, 500000, False, False), (417629055969792378, 7580616, 500000, False, False), 139765788487174936, 77000000000000000000), (1900000000000000000000, (467048001390661856, 7275625, 500000, True, False), (467048001390661856, 8172294, 500000, True, False), 62954772831228782, -185670000000000000000), (2000000000000000000000, (519818184635781905, 4293655, 500000, True, False), (519818184635781905, 5119049, 500000, True, False), 31918656491452468, -231640000000000000000), (2100000000000000000000, (571138377347954056, 5586300, 500000, True, False), (571138377347954056, 6387863, 500000, True, False), 17878834707336788, -488460000000000000000), (2200000000000000000000, (619821322335253972, 3586617, 500000, True, True), (619821322335253972, 4367703, 500000, True, False), 10816118468935972, -499900000000000000000), (1600000000000000000000, (413359620438031088, 73742185, 500000, False, False), (413359620438031088, 75985743, 500000, False, False), 624311372321320709, 0), (1500000000000000000000, (486726307611261874, 151770281, 500000, True, False), (486726307611261874, 154752880, 500000, True, False), 826141229581625121, 0)], [1700000000000000000000, 1800000000000000000000, 1900000000000000000000, 2000000000000000000000, 2100000000000000000000, 2200000000000000000000, 1600000000000000000000, 1500000000000000000000], [(1700000000000000000000, (388810010046517632, 158610980, 500000, False, False), (388810010046517632, 161716514, 500000, False, False), -670026705136114810, -195753219887523536000), (1800000000000000000000, (417629055969792378, 272718706, 500000, True, False), (417629055969792378, 276805844, 500000, True, False), -860234211512825064, -159000000000000000000), (1900000000000000000000, (467048001390661856, 287699566, 500000, True, False), (467048001390661856, 292182302, 500000, True, False), -937045227168771218, -28090000000000000000), (2000000000000000000000, (519818184635781905, 369734687, 500000, True, False), (519818184635781905, 374689382, 500000, True, False), -968081343508547532, -6540000000000000000), (2100000000000000000000, (571138377347954056, 461667109, 500000, True, False), (571138377347954056, 467083929, 500000, True, False), -982121165292663212, 0), (2200000000000000000000, (619821322335253972, 560981384, 500000, True, False), (619821322335253972, 566863626, 500000, True, False), -989183881531064029, 0), (1600000000000000000000, (413359620438031088, 78137031, 500000, False, False), (413359620438031088, 80128948, 500000, False, False), -375688627678679292, -246214708043730166000), (1500000000000000000000, (486726307611261874, 53821546, 500000, False, False), (486726307611261874, 55174770, 500000, False, False), -173858770418374879, -393500000000000000000)], 1635797030000000000000), (1686902400, [2050000000000000000000, 2000000000000000000000, 1950000000000000000000, 1900000000000000000000, 1850000000000000000000, 1800000000000000000000, 1750000000000000000000], [(2050000000000000000000, (889716519213484138, 10, 500000, True, True), (889716519213484138, 21993, 500000, True, True), 220853036916, -401000000000000000000), (2000000000000000000000, (830657570271372805, 47, 500000, True, True), (830657570271372805, 22030, 500000, True, True), 728179140740, -510000000000000000000), (1950000000000000000000, (768944957030861138, 98, 500000, True, True), (768944957030861138, 22081, 500000, True, True), 2709353439313, -332580000000000000000), (1900000000000000000000, (704442597421111086, 346, 500000, True, True), (704442597421111086, 22331, 500000, True, True), 11706192154672, -276560000000000000000), (1850000000000000000000, (637185231964021683, 762, 500000, True, True), (637185231964021683, 22755, 500000, True, True), 61072136709455, -13750000000000000000), (1800000000000000000000, (567776048111252247, 5663, 500000, True, True), (567776048111252247, 27713, 500000, True, True), 405344370262044, -50060000000000000000), (1750000000000000000000, (498821239543237299, 44717, 500000, True, True), (498821239543237299, 67285, 500000, True, True), 3623947409968900, 0)], [2050000000000000000000, 2000000000000000000000, 1950000000000000000000, 1900000000000000000000, 1850000000000000000000, 1800000000000000000000, 1750000000000000000000], [(2050000000000000000000, (889716519213484138, 412982455, 500000, True, False), (889716519213484138, 414399773, 500000, True, False), -999999779146963084, 0), (2000000000000000000000, (830657570271372805, 363067802, 500000, True, False), (830657570271372805, 364336021, 500000, True, False), -999999271820859260, 0), (1950000000000000000000, (768944957030861138, 407187559, 500000, True, False), (768944957030861138, 408578347, 500000, True, False), -999997290646560688, -91000000000000000000), (1900000000000000000000, (704442597421111086, 263238618, 500000, True, False), (704442597421111086, 264208637, 500000, True, False), -999988293807845328, 0), (1850000000000000000000, (637185231964021683, 375578292, 500000, True, False), (637185231964021683, 376867964, 500000, True, False), -999938927863290545, -196020000000000000000), (1800000000000000000000, (567776048111252247, 168199285, 500000, True, False), (567776048111252247, 168884883, 500000, True, False), -999594655629737957, -10000000000000000000), (1750000000000000000000, (498821239543237299, 203993556, 500000, True, False), (498821239543237299, 204777164, 500000, True, False), -996376052590031100, -203000000000000000000)], 1635797030000000000000), (1687507200, [1700000000000000000000, 1750000000000000000000, 1800000000000000000000, 1850000000000000000000, 1900000000000000000000, 1950000000000000000000, 2000000000000000000000, 2050000000000000000000, 2100000000000000000000], [(1700000000000000000000, (398743377170208884, 15197775, 500000, False, False), (398743377170208884, 15827667, 500000, False, False), 269589224375318926, 0), (1750000000000000000000, (419083627572790013, 7323097, 500000, False, False), (419083627572790013, 7800475, 500000, False, False), 146557803251237884, 0), (1800000000000000000000, (450101472822761301, 4211284, 500000, True, False), (450101472822761301, 4609457, 500000, True, False), 80798826786577757, -30000000000000000000), (1850000000000000000000, (485185618355956879, 2998515, 500000, True, True), (485185618355956879, 3356880, 500000, True, True), 46748714409792325, -100000000000000000000), (1900000000000000000000, (521311261968496605, 1825746, 500000, True, True), (521311261968496605, 2161058, 500000, True, True), 28490297527880314, -100000000000000000000), (1950000000000000000000, (557181306935093274, 1710992, 500000, True, True), (557181306935093274, 2035053, 500000, True, True), 18193572029888635, -216580000000000000000), (2000000000000000000000, (592243783419753621, 1770860, 500000, True, True), (592243783419753621, 2088666, 500000, True, True), 12093489622593515, -350420000000000000000), (2050000000000000000000, (626274127422443931, 400221, 500000, True, True), (626274127422443931, 709646, 500000, True, True), 8317283119120232, 0), (2100000000000000000000, (659197504581035125, 288003, 500000, True, True), (659197504581035125, 594501, 500000, True, True), 5888702556444682, 0)], [1700000000000000000000, 1750000000000000000000, 1800000000000000000000, 1850000000000000000000, 1900000000000000000000, 1950000000000000000000, 2000000000000000000000, 2050000000000000000000, 2100000000000000000000], [(1700000000000000000000, (398743377170208884, 105092131, 500000, True, False), (398743377170208884, 106784360, 500000, True, False), -730410775624681074, -100000000000000000000), (1750000000000000000000, (419083627572790013, 160433603, 500000, True, False), (419083627572790013, 162491209, 500000, True, False), -853442196748762116, -100000000000000000000), (1800000000000000000000, (450101472822761301, 221973207, 500000, True, False), (450101472822761301, 224338466, 500000, True, False), -919201173213422243, -100000000000000000000), (1850000000000000000000, (485185618355956879, 285875461, 500000, True, False), (485185618355956879, 288510274, 500000, True, False), -953251285590207675, -100000000000000000000), (1900000000000000000000, (521311261968496605, 277549174, 500000, True, False), (521311261968496605, 280227456, 500000, True, False), -971509702472119687, -18500000000000000000), (1950000000000000000000, (557181306935093274, 312497794, 500000, True, False), (557181306935093274, 315333653, 500000, True, False), -981806427970111365, 0), (2000000000000000000000, (592243783419753621, 362103325, 500000, True, False), (592243783419753621, 365133352, 500000, True, False), -987906510377406486, 0), (2050000000000000000000, (626274127422443931, 411816801, 500000, True, False), (626274127422443931, 415038123, 500000, True, False), -991682716880879768, 0), (2100000000000000000000, (659197504581035125, 461592611, 500000, True, False), (659197504581035125, 465003561, 500000, True, False), -994111297443555318, 0)], 1635797030000000000000)])
@@ -195,12 +194,12 @@ class MockDhvChainReader(DhvChainReader):
             expiry = _by_expiration[0]
             for _by_strike_calls in _by_expiration[2]:
                 strike = cast_e18_to_float(_by_strike_calls[0])
-                _position_data.append(Position(expiry, True, strike,
-                                               cast_e18_to_float(_by_strike_calls[4])))
+                _position_data.append(OptionPosition(expiry, True, strike,
+                                                     cast_e18_to_float(_by_strike_calls[4])))
             for _by_strike_puts in _by_expiration[4]:
                 strike = cast_e18_to_float(_by_strike_puts[0])
-                _position_data.append(Position(expiry, False, strike,
-                                               cast_e18_to_float(_by_strike_puts[4])))
+                _position_data.append(OptionPosition(expiry, False, strike,
+                                                     cast_e18_to_float(_by_strike_puts[4])))
         return _position_data
 
     def collat_param_data(self, is_usd_collateral: bool = False) -> CollateralParams:

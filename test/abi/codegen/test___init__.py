@@ -5,12 +5,10 @@ from chain.abi.codegen import ProtocolAbiCodegen, AbiConfig
 from chain.abi.path import abi_resource_path
 from chain.chains import CHAIN
 from chain.protocols import ProtocolDefinition
-from chain.web3_api import Web3Endpoint
-from test import test_config
 from test.abi.codegen.test_protocolspec import test_dhv_contract_defs
 
 
-@skip("Only for codegen!")
+# @skip("Only for codegen!")
 class TestProtocolAbiCodegen(TestCase):
     def test_generate_package_source(self):
         contracts = test_dhv_contract_defs()
@@ -23,7 +21,9 @@ class TestProtocolAbiCodegen(TestCase):
                 contracts
             )
         )
-        ps = gen.generate_package_source(is_dry_run=False)
+        ps = gen.generate_package_source(
+            is_dry_run=False,
+        )
         for k, v in ps.items():
             print(k)
             print(v)

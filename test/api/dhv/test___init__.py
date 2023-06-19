@@ -75,7 +75,3 @@ class TestDhvChainReader(TestCase):
 
         self.assertTrue( delta_spread_params == dhv.delta_spread_param_data(),
                         "... delta spread fail")
-
-if __name__ == "__main__":
-    x = TestDhvChainReader()
-    x.test_data()

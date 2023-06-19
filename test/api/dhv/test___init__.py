@@ -2,7 +2,7 @@ from unittest import TestCase
 from chain.config import Config
 from chain.api.dhv import DhvChainReader
 from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams,\
-    DeltaSpreadParams, SpreadParams
+    DeltaSpreadParams
 from chain.api.dhv.collatparams import CollateralParams
 from chain.api.dhv.slippageparams import SlippageParams
 
@@ -53,7 +53,6 @@ dhv_borrow_rates = [dhv_buy_call_rate, dhv_buy_put_rate, dhv_sell_call_rate, dhv
 collat_spread_params = CollateralSpreadParams(collateral_rate)
 fee_iv_spread_params = FeeIvSpreadParams(fee_dollar, iv_relative_spread)
 delta_spread_params = DeltaSpreadParams(dhv_borrow_rates[1], dhv_borrow_rates[0], dhv_borrow_rates[2], dhv_borrow_rates[3])
-spread_params = SpreadParams(fee_iv_spread_params, collat_spread_params, delta_spread_params)
 
 
 def test_config() -> Config:
@@ -71,5 +70,11 @@ class TestDhvChainReader(TestCase):
         self.assertTrue( collat_params == dhv.collat_param_data(),
                         "... collat fail")
 
-        self.assertTrue( spread_params == dhv.spread_param_data(),
-                        "... spread fail")
+        self.assertTrue( collat_spread_params == dhv.delta_spread_param_data(),
+                        "... delta spread fail")
+
+        self.assertTrue( fee_iv_spread_params == dhv.fee_iv_spread_param_data(),
+                        "... fee iv spread fail")
+
+        self.assertTrue( delta_spread_params == dhv.delta_spread_param_data(),
+                        "... delta spread fail")

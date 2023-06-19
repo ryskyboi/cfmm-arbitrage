@@ -9,8 +9,8 @@ from chain.chains import ChainDefinition
 from chain.web3_api import Web3Endpoint
 
 from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams,\
-    DeltaSpreadParams, SpreadParams
-from chain.api.dhv.positions import Positions
+    DeltaSpreadParams
+from chain.api.dhv.positions import Positions, Position
 from chain.api.dhv.collatparams import CollateralParams
 from chain.api.dhv.slippageparams import SlippageParams
 
@@ -22,9 +22,6 @@ from chain.abi.ARBITRUM_GOERLI.DHV.OpynNewCalculator import OpynNewCalculator
 ##Testnet token contracts
 from chain.abi.ARBITRUM_GOERLI.DHV.weth import weth
 from chain.abi.ARBITRUM_GOERLI.DHV.usdc import usdc
-
-def nested_dict():
-    return defaultdict(nested_dict)
 
 @dataclass
 class SabrModelParam:
@@ -87,81 +84,58 @@ class DhvChainReader(ChainReader):
             )
         return sabrs
 
-    def spread_param_data(self) -> SpreadParams:
-        """Takes Spread params that are currently using in chain
-
-        Returns:
-            SpreadParams: a dataclass with 3 sub-dataclasses
-            feeivspreadparsms contains a fee per contract a relative myltiplier
-             that allows us to pay less in IV than we buy it for
-            collat_spread_params contains the rate paid on collat that the DHV has to lock up
-            delta_spread_params contains 4 rates charged when buying/sellig
-            calls and puts and their related hedging activities
-        """
-
-        collat_lending_rate = self._beyond_pricer.collateralLendingRate()
-        delta_borrow_rates = self._beyond_pricer.deltaBorrowRates()
-        fee_per_contract = self._beyond_pricer.feePerContract()
-        iv_relative_spread = self._beyond_pricer.bidAskIVSpread()
-
-        collat_spread_params = CollateralSpreadParams(cast_e6_to_float(collat_lending_rate))
-        fee_iv_spread_params = FeeIvSpreadParams(cast_e6_to_float(fee_per_contract),
-                                                 cast_e6_to_float(iv_relative_spread))
-        delta_spread_params = DeltaSpreadParams(cast_e6_to_float(delta_borrow_rates[1]),
-                                                cast_e6_to_float(delta_borrow_rates[0]),
-                                                cast_e6_to_float(delta_borrow_rates[2]),
-                                                cast_e6_to_float(delta_borrow_rates[3]))
-
-        return SpreadParams(fee_iv_spread_params,
-                            collat_spread_params,
-                            delta_spread_params)
-
     def position_data(self) -> Positions:
         """This takes the current positions that we
         have on chain and converts them to a nested dict
 
         Returns:
-            Positions: is_call -> expiry -> strike -> position
+            A list of position objects
+            where position is (expiry_timestamp_s, is_call, strike, position)
         """
-        _position_data : Positions = nested_dict()
+        _position_data : Positions = []
         option_chain : DHVLensMK1_OptionChain = self._lens.getOptionChain()
-        expirations = option_chain[0]
+        #expirations = option_chain[0]
         data = option_chain[1]
         for _by_expiration in data:
             expiry = _by_expiration[0]
             for _by_strike_calls in _by_expiration[2]:
                 strike = cast_e18_to_float(_by_strike_calls[0])
-                _position_data[True][expiry][strike] = cast_e18_to_float(_by_strike_calls[4])
+                _position_data.append(Position(expiry, True, strike,
+                                               cast_e18_to_float(_by_strike_calls[4])))
             for _by_strike_puts in _by_expiration[4]:
                 strike = cast_e18_to_float(_by_strike_puts[0])
-                _position_data[False][expiry][strike] = cast_e18_to_float(_by_strike_puts[4])
+                _position_data.append(Position(expiry, False, strike,
+                                               cast_e18_to_float(_by_strike_puts[4])))
         return _position_data
 
-    def collat_param_data(self, isUSDCcollateral: bool = False) -> CollateralParams:
-        """Takes in the collat that we are using and outputs current collat params
+    def collat_param_data(self, is_usd_collateral: bool = False) -> CollateralParams:
+        """
+        https://www.notion.so/rysk/DHV-Parameters-numbers-7e79e9ffb88e4bc9bcc9c8b813233424
+        Takes in the collat that we are using and outputs current collat params
         Returns:
             CollateralParams: spot shocks and maps of DTE to premium curves for both calls and puts
         """
-
-        USDC_ADDRESS = usdc.address
-        WETH_ADDRESS = weth.address
-        collat = USDC_ADDRESS if isUSDCcollateral else WETH_ADDRESS
+        usdc_address = usdc.address
+        weth_address = weth.address
+        collat = usdc_address if is_usd_collateral else weth_address
         call_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(
-            WETH_ADDRESS, USDC_ADDRESS, collat, False))
+            weth_address, usdc_address, collat, False))
         put_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(
-            WETH_ADDRESS, USDC_ADDRESS, collat, True))
+            weth_address, usdc_address, collat, True))
         times_to_exp_calls = self._opyn_calculator.getTimesToExpiry(
-            WETH_ADDRESS, USDC_ADDRESS, collat, False)
+            weth_address, usdc_address, collat, False)
         times_to_exp_puts = self._opyn_calculator.getTimesToExpiry(
-            WETH_ADDRESS, USDC_ADDRESS, collat, True)
+            weth_address, usdc_address, collat, True)
         max_prices_calls = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(
-            WETH_ADDRESS, USDC_ADDRESS, collat, False, t)) for t in times_to_exp_calls]
+            weth_address, usdc_address, collat, False, t)) for t in times_to_exp_calls]
         max_prices_puts = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(
-            WETH_ADDRESS, USDC_ADDRESS, collat, True, t)) for t in times_to_exp_puts]
+            weth_address, usdc_address, collat, True, t)) for t in times_to_exp_puts]
         return CollateralParams(call_spot_shock,
-                                dict(zip([t/(60*60*24) for t in times_to_exp_calls], max_prices_calls)),
+                                dict(zip([t/(60*60*24) for t in times_to_exp_calls],
+                                         max_prices_calls)),
                                 put_spot_shock,
-                                dict(zip([t/(60*60*24) for t in times_to_exp_puts], max_prices_puts)))
+                                dict(zip([t/(60*60*24) for t in times_to_exp_puts],
+                                         max_prices_puts)))
 
     def slippage_param_data(self) -> SlippageParams:
         """Takes slippage params that we are currently using on chain and outputs them
@@ -170,11 +144,37 @@ class DhvChainReader(ChainReader):
             SlippageGradientMultipliers: slippage gradient multipliers for calls and puts
             SlippageGradient; number we multiply all parsnms by
         """
-        call_slippage_gradient_multipliers = self._beyond_pricer.getCallSlippageGradientMultipliers()
-        put_slippage_gradient_multipliers = self._beyond_pricer.getPutSlippageGradientMultipliers()
+        call_slippage_gradient_multipliers =\
+            self._beyond_pricer.getCallSlippageGradientMultipliers()
+        put_slippage_gradient_multipliers =\
+            self._beyond_pricer.getPutSlippageGradientMultipliers()
         slippage_gradient = self._beyond_pricer.slippageGradient()
         return SlippageParams([cast_e18_to_float(multiplier) for multiplier
                                in put_slippage_gradient_multipliers],
                               [cast_e18_to_float(multiplier) for multiplier
                                in call_slippage_gradient_multipliers],
                               cast_e18_to_float(slippage_gradient))
+
+    def fee_iv_spread_param_data(self) -> FeeIvSpreadParams:
+        """returns: feeivspreadparsms contains a fee per contract a relative myltiplier
+        that allows us to pay less in IV than we buy it for
+        """
+        fee_per_contract = self._beyond_pricer.feePerContract()
+        iv_relative_spread = self._beyond_pricer.bidAskIVSpread()
+        return FeeIvSpreadParams(cast_e6_to_float(fee_per_contract),
+                                 cast_e6_to_float(iv_relative_spread))
+
+    def delta_spread_param_data(self) -> DeltaSpreadParams:
+        """returns: delta_spread_params contains 4 rates charged when buying/sellig
+        calls and puts and their related hedging activities"""
+        delta_borrow_rates = self._beyond_pricer.deltaBorrowRates()
+        return DeltaSpreadParams(cast_e6_to_float(delta_borrow_rates[1]),
+                                  cast_e6_to_float(delta_borrow_rates[0]),
+                                  cast_e6_to_float(delta_borrow_rates[2]),
+                                  cast_e6_to_float(delta_borrow_rates[3]))
+
+    def collat_spread_param_data(self):
+        """returns: collat_spread_params contains the rate paid on
+            collat that the DHV has to lock up"""
+        collat_lending_rate = self._beyond_pricer.collateralLendingRate()
+        return CollateralSpreadParams(cast_e6_to_float(collat_lending_rate))

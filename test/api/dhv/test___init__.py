@@ -67,7 +67,7 @@ class TestDhvChainReader(TestCase):
         self.assertTrue( collat_params == dhv.collat_param_data(),
                         "... collat fail")
 
-        self.assertTrue( collat_spread_params == dhv.delta_spread_param_data(),
+        self.assertTrue( collat_spread_params == dhv.collat_spread_param_data(),
                         "... delta spread fail")
 
         self.assertTrue( fee_iv_spread_params == dhv.fee_iv_spread_param_data(),
@@ -75,3 +75,7 @@ class TestDhvChainReader(TestCase):
 
         self.assertTrue( delta_spread_params == dhv.delta_spread_param_data(),
                         "... delta spread fail")
+
+if __name__ == "__main__":
+    x = TestDhvChainReader()
+    x.test_data()

@@ -55,14 +55,11 @@ fee_iv_spread_params = FeeIvSpreadParams(fee_dollar, iv_relative_spread)
 delta_spread_params = DeltaSpreadParams(dhv_borrow_rates[1], dhv_borrow_rates[0], dhv_borrow_rates[2], dhv_borrow_rates[3])
 
 
-def test_config() -> Config:
-    # TODO: remove! Should not have keys in code!
-    return Config("hnzD3zyO8Ix97Akj37umR7ZdtaSW2xuC", "ARBITRUM_GOERLI")
 
 class TestDhvChainReader(TestCase):
     def test_data(self):
         dhv = DhvChainReader.from_config(
-            test_config()
+            Config("hnzD3zyO8Ix97Akj37umR7ZdtaSW2xuC", "ARBITRUM_GOERLI")
         )
         self.assertTrue( slippage_params == dhv.slippage_param_data(),
                         "... slippage fail")

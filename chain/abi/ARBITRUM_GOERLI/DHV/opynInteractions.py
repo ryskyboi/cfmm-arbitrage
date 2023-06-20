@@ -19,7 +19,7 @@ class opynInteractions(BaseAbi):
         expiration: uint_e18,
         isPut: bool,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getOtoken",
             oTokenFactory=oTokenFactory,
             collateral=collateral,
@@ -29,4 +29,5 @@ class opynInteractions(BaseAbi):
             expiration=expiration,
             isPut=isPut
         )
+        return Address.from_tuple(my_var_0)
     

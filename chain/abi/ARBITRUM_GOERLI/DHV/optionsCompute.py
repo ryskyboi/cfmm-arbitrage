@@ -16,6 +16,20 @@ class Types_PortfolioValues:
     timestamp: uint_e18
     spotPrice: uint_e18
 
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            int_e18.from_tuple(args[0]),
+            int_e18.from_tuple(args[1]),
+            int_e18.from_tuple(args[2]),
+            int_e18.from_tuple(args[3]),
+            int_e18.from_tuple(args[4]),
+            uint_e18.from_tuple(args[5]),
+            uint_e18.from_tuple(args[6]),
+        )
+
+
+
 class optionsCompute(BaseAbi):
     address: Address = Address("0x1f9E2596037dC1727AbeA03085E92Ef65641949f")
     
@@ -24,11 +38,12 @@ class optionsCompute(BaseAbi):
         strikePrice: uint_e18,
         collateral: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "formatStrikePrice",
             strikePrice=strikePrice,
             collateral=collateral
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def validatePortfolioValues(
         self,

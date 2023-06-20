@@ -18,7 +18,7 @@ class blackScholes(BaseAbi):
         rfr: uint_e18,
         isPut: bool,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "blackScholesCalc",
             price=price,
             strike=strike,
@@ -27,6 +27,7 @@ class blackScholes(BaseAbi):
             rfr=rfr,
             isPut=isPut
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def blackScholesCalcGreeks(
         self,
@@ -37,7 +38,7 @@ class blackScholes(BaseAbi):
         rfr: uint_e18,
         isPut: bool,
     ) -> tuple[uint_e18, int_e18]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "blackScholesCalcGreeks",
             price=price,
             strike=strike,
@@ -46,6 +47,7 @@ class blackScholes(BaseAbi):
             rfr=rfr,
             isPut=isPut
         )
+        return uint_e18.from_tuple(my_var_0), int_e18.from_tuple(my_var_1)
         
     def callOptionPrice(
         self,
@@ -55,7 +57,7 @@ class blackScholes(BaseAbi):
         strike: int_e18,
         eToNegRT: int_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "callOptionPrice",
             d1=d1,
             d1Denominator=d1Denominator,
@@ -63,6 +65,7 @@ class blackScholes(BaseAbi):
             strike=strike,
             eToNegRT=eToNegRT
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def callOptionPriceGreeks(
         self,
@@ -72,7 +75,7 @@ class blackScholes(BaseAbi):
         strike: int_e18,
         eToNegRT: int_e18,
     ) -> tuple[uint_e18, int_e18]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "callOptionPriceGreeks",
             d1=d1,
             d1Denominator=d1Denominator,
@@ -80,6 +83,7 @@ class blackScholes(BaseAbi):
             strike=strike,
             eToNegRT=eToNegRT
         )
+        return uint_e18.from_tuple(my_var_0), int_e18.from_tuple(my_var_1)
         
     def getDelta(
         self,
@@ -90,7 +94,7 @@ class blackScholes(BaseAbi):
         rfr: uint_e18,
         isPut: bool,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getDelta",
             price=price,
             strike=strike,
@@ -99,6 +103,7 @@ class blackScholes(BaseAbi):
             rfr=rfr,
             isPut=isPut
         )
+        return int_e18.from_tuple(my_var_0)
         
     def putOptionPrice(
         self,
@@ -108,7 +113,7 @@ class blackScholes(BaseAbi):
         strike: int_e18,
         eToNegRT: int_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "putOptionPrice",
             d1=d1,
             d1Denominator=d1Denominator,
@@ -116,6 +121,7 @@ class blackScholes(BaseAbi):
             strike=strike,
             eToNegRT=eToNegRT
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def putOptionPriceGreeks(
         self,
@@ -125,7 +131,7 @@ class blackScholes(BaseAbi):
         strike: int_e18,
         eToNegRT: int_e18,
     ) -> tuple[uint_e18, int_e18]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "putOptionPriceGreeks",
             d1=d1,
             d1Denominator=d1Denominator,
@@ -133,4 +139,5 @@ class blackScholes(BaseAbi):
             strike=strike,
             eToNegRT=eToNegRT
         )
+        return uint_e18.from_tuple(my_var_0), int_e18.from_tuple(my_var_1)
     

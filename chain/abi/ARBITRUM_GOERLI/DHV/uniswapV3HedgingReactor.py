@@ -12,16 +12,18 @@ class uniswapV3HedgingReactor(BaseAbi):
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def buySlippage(
         self,
     ) -> uint16:
-        return self._call(
+        my_var_0 = self._call(
             "buySlippage"
         )
+        return uint16.from_tuple(my_var_0)
         
     def changePoolFee(
         self,
@@ -35,74 +37,84 @@ class uniswapV3HedgingReactor(BaseAbi):
     def collateralAsset(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "collateralAsset"
         )
+        return Address.from_tuple(my_var_0)
         
     def getDelta(
         self,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getDelta"
         )
+        return int_e18.from_tuple(my_var_0)
         
     def getPoolDenominatedValue(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getPoolDenominatedValue"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def hedgeDelta(
         self,
         _delta: int_e18,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "hedgeDelta",
             _delta=_delta
         )
+        return int_e18.from_tuple(my_var_0)
         
     def internalDelta(
         self,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "internalDelta"
         )
+        return int_e18.from_tuple(my_var_0)
         
     def minAmount(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "minAmount"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def parentLiquidityPool(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "parentLiquidityPool"
         )
+        return Address.from_tuple(my_var_0)
         
     def poolFee(
         self,
     ) -> uint24:
-        return self._call(
+        my_var_0 = self._call(
             "poolFee"
         )
+        return uint24.from_tuple(my_var_0)
         
     def priceFeed(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "priceFeed"
         )
+        return Address.from_tuple(my_var_0)
         
     def sellSlippage(
         self,
     ) -> uint16:
-        return self._call(
+        my_var_0 = self._call(
             "sellSlippage"
         )
+        return uint16.from_tuple(my_var_0)
         
     def setAuthority(
         self,
@@ -136,30 +148,34 @@ class uniswapV3HedgingReactor(BaseAbi):
     def swapRouter(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "swapRouter"
         )
+        return Address.from_tuple(my_var_0)
         
     def update(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "update"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def wETH(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "wETH"
         )
+        return Address.from_tuple(my_var_0)
         
     def withdraw(
         self,
         _amount: uint_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "withdraw",
             _amount=_amount
         )
+        return uint_e18.from_tuple(my_var_0)
     

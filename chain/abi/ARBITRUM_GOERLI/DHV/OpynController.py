@@ -12,16 +12,18 @@ class OpynController(BaseAbi):
     def implementation(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "implementation"
         )
+        return Address.from_tuple(my_var_0)
         
     def proxyOwner(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "proxyOwner"
         )
+        return Address.from_tuple(my_var_0)
         
     def transferProxyOwnership(
         self,
@@ -44,7 +46,7 @@ class OpynController(BaseAbi):
     def upgradeToAndCall(
         self,
         _implementation: Address,
-        _data: bytes,
+        _data: BaseBytes,
     ) -> None:
         self._call(
             "upgradeToAndCall",

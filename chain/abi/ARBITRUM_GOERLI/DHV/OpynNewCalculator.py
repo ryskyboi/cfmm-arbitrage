@@ -15,9 +15,30 @@ class MarginVault_Vault:
     longAmounts: list[uint_e18]
     collateralAmounts: list[uint_e18]
 
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            [Address.from_tuple(arg_0) for arg_0 in args[0]],
+            [Address.from_tuple(arg_0) for arg_0 in args[1]],
+            [Address.from_tuple(arg_0) for arg_0 in args[2]],
+            [uint_e18.from_tuple(arg_0) for arg_0 in args[3]],
+            [uint_e18.from_tuple(arg_0) for arg_0 in args[4]],
+            [uint_e18.from_tuple(arg_0) for arg_0 in args[5]],
+        )
+
+
+
 @dataclass
 class FixedPointInt256_FixedPointInt:
     value: int_e18
+
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            int_e18.from_tuple(args[0]),
+        )
+
+
 
 class OpynNewCalculator(BaseAbi):
     address: Address = Address("0xcD270e755C2653e806e16dD3f78E16C89B7a1c9e")
@@ -25,56 +46,62 @@ class OpynNewCalculator(BaseAbi):
     def AUCTION_TIME(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "AUCTION_TIME"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def addressBook(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "addressBook"
         )
+        return Address.from_tuple(my_var_0)
         
     def getCollateralDust(
         self,
         _collateral: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getCollateralDust",
             _collateral=_collateral
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getExcessCollateral(
         self,
         _vault: MarginVault_Vault,
         _vaultType: uint_e18,
     ) -> tuple[uint_e18, bool]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "getExcessCollateral",
             _vault=_vault,
             _vaultType=_vaultType
         )
+        return uint_e18.from_tuple(my_var_0), bool(my_var_1)
         
     def getExpiredPayoutRate(
         self,
         _otoken: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getExpiredPayoutRate",
             _otoken=_otoken
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getMarginRequired(
         self,
         _vault: MarginVault_Vault,
         _vaultType: uint_e18,
     ) -> tuple[FixedPointInt256_FixedPointInt, FixedPointInt256_FixedPointInt]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "getMarginRequired",
             _vault=_vault,
             _vaultType=_vaultType
         )
+        return FixedPointInt256_FixedPointInt.from_tuple(my_var_0), FixedPointInt256_FixedPointInt.from_tuple(my_var_1)
         
     def getMaxPrice(
         self,
@@ -84,7 +111,7 @@ class OpynNewCalculator(BaseAbi):
         _isPut: bool,
         _timeToExpiry: uint_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getMaxPrice",
             _underlying=_underlying,
             _strike=_strike,
@@ -92,6 +119,7 @@ class OpynNewCalculator(BaseAbi):
             _isPut=_isPut,
             _timeToExpiry=_timeToExpiry
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getNakedMarginRequired(
         self,
@@ -105,7 +133,7 @@ class OpynNewCalculator(BaseAbi):
         _collateralDecimals: uint_e18,
         _isPut: bool,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getNakedMarginRequired",
             _underlying=_underlying,
             _strike=_strike,
@@ -117,13 +145,15 @@ class OpynNewCalculator(BaseAbi):
             _collateralDecimals=_collateralDecimals,
             _isPut=_isPut
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getOracleDeviation(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getOracleDeviation"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getSpotShock(
         self,
@@ -132,13 +162,14 @@ class OpynNewCalculator(BaseAbi):
         _collateral: Address,
         _isPut: bool,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getSpotShock",
             _underlying=_underlying,
             _strike=_strike,
             _collateral=_collateral,
             _isPut=_isPut
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getTimesToExpiry(
         self,
@@ -147,45 +178,50 @@ class OpynNewCalculator(BaseAbi):
         _collateral: Address,
         _isPut: bool,
     ) -> list[uint_e18]:
-        return self._call(
+        my_var_0 = self._call(
             "getTimesToExpiry",
             _underlying=_underlying,
             _strike=_strike,
             _collateral=_collateral,
             _isPut=_isPut
         )
+        return [uint_e18.from_tuple(arg_0) for arg_0 in my_var_0]
         
     def isLiquidatable(
         self,
         _vault: MarginVault_Vault,
         _vaultType: uint_e18,
     ) -> tuple[bool, uint_e18, uint_e18]:
-        return self._call(
+        my_var_0, my_var_1, my_var_2 = self._call(
             "isLiquidatable",
             _vault=_vault,
             _vaultType=_vaultType
         )
+        return bool(my_var_0), uint_e18.from_tuple(my_var_1), uint_e18.from_tuple(my_var_2)
         
     def liquidationMultiplier(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "liquidationMultiplier"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def oracle(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "oracle"
         )
+        return Address.from_tuple(my_var_0)
         
     def owner(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "owner"
         )
+        return Address.from_tuple(my_var_0)
         
     def renounceOwnership(
         self,

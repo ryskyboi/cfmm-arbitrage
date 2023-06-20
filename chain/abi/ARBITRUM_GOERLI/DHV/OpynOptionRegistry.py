@@ -15,15 +15,29 @@ class Types_OptionSeries:
     strikeAsset: Address
     collateral: Address
 
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            uint64.from_tuple(args[0]),
+            uint128.from_tuple(args[1]),
+            bool(args[2]),
+            Address.from_tuple(args[3]),
+            Address.from_tuple(args[4]),
+            Address.from_tuple(args[5]),
+        )
+
+
+
 class OpynOptionRegistry(BaseAbi):
     address: Address = Address("0x4E89cc3215AF050Ceb63Ca62470eeC7C1A66F737")
     
     def addressBook(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "addressBook"
         )
+        return Address.from_tuple(my_var_0)
         
     def adjustCollateral(
         self,
@@ -46,70 +60,78 @@ class OpynOptionRegistry(BaseAbi):
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def callLowerHealthFactor(
         self,
     ) -> uint64:
-        return self._call(
+        my_var_0 = self._call(
             "callLowerHealthFactor"
         )
+        return uint64.from_tuple(my_var_0)
         
     def callUpperHealthFactor(
         self,
     ) -> uint64:
-        return self._call(
+        my_var_0 = self._call(
             "callUpperHealthFactor"
         )
+        return uint64.from_tuple(my_var_0)
         
     def checkVaultHealth(
         self,
         vaultId: uint_e18,
     ) -> tuple[bool, bool, uint_e18, uint_e18, uint_e18, Address]:
-        return self._call(
+        my_var_0, my_var_1, my_var_2, my_var_3, my_var_4, my_var_5 = self._call(
             "checkVaultHealth",
             vaultId=vaultId
         )
+        return bool(my_var_0), bool(my_var_1), uint_e18.from_tuple(my_var_2), uint_e18.from_tuple(my_var_3), uint_e18.from_tuple(my_var_4), Address.from_tuple(my_var_5)
         
     def close(
         self,
         _series: Address,
         amount: uint_e18,
     ) -> tuple[bool, uint_e18]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "close",
             _series=_series,
             amount=amount
         )
+        return bool(my_var_0), uint_e18.from_tuple(my_var_1)
         
     def collateralAsset(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "collateralAsset"
         )
+        return Address.from_tuple(my_var_0)
         
     def getCollateral(
         self,
         series: Types_OptionSeries,
         amount: uint_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getCollateral",
             series=series,
             amount=amount
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getIssuanceHash(
         self,
         _series: Types_OptionSeries,
     ) -> bytes32:
-        return self._call(
+        my_var_0 = self._call(
             "getIssuanceHash",
             _series=_series
         )
+        return bytes32.from_tuple(my_var_0)
         
     def getOtoken(
         self,
@@ -120,7 +142,7 @@ class OpynOptionRegistry(BaseAbi):
         strike: uint_e18,
         collateral: Address,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getOtoken",
             underlying=underlying,
             strikeAsset=strikeAsset,
@@ -129,58 +151,65 @@ class OpynOptionRegistry(BaseAbi):
             strike=strike,
             collateral=collateral
         )
+        return Address.from_tuple(my_var_0)
         
     def getSeries(
         self,
         _series: Types_OptionSeries,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getSeries",
             _series=_series
         )
+        return Address.from_tuple(my_var_0)
         
     def getSeriesAddress(
         self,
         issuanceHash: bytes32,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getSeriesAddress",
             issuanceHash=issuanceHash
         )
+        return Address.from_tuple(my_var_0)
         
     def getSeriesInfo(
         self,
         series: Address,
     ) -> Types_OptionSeries:
-        return self._call(
+        my_var_0 = self._call(
             "getSeriesInfo",
             series=series
         )
+        return Types_OptionSeries.from_tuple(my_var_0)
         
     def issue(
         self,
         optionSeries: Types_OptionSeries,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "issue",
             optionSeries=optionSeries
         )
+        return Address.from_tuple(my_var_0)
         
     def keeper(
         self,
         x_0: Address,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "keeper",
             x_0=x_0
         )
+        return bool(my_var_0)
         
     def liquidityPool(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "liquidityPool"
         )
+        return Address.from_tuple(my_var_0)
         
     def open(
         self,
@@ -188,35 +217,39 @@ class OpynOptionRegistry(BaseAbi):
         amount: uint_e18,
         collateralAmount: uint_e18,
     ) -> tuple[bool, uint_e18]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "open",
             _series=_series,
             amount=amount,
             collateralAmount=collateralAmount
         )
+        return bool(my_var_0), uint_e18.from_tuple(my_var_1)
         
     def putLowerHealthFactor(
         self,
     ) -> uint64:
-        return self._call(
+        my_var_0 = self._call(
             "putLowerHealthFactor"
         )
+        return uint64.from_tuple(my_var_0)
         
     def putUpperHealthFactor(
         self,
     ) -> uint64:
-        return self._call(
+        my_var_0 = self._call(
             "putUpperHealthFactor"
         )
+        return uint64.from_tuple(my_var_0)
         
     def redeem(
         self,
         _series: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "redeem",
             _series=_series
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def registerLiquidatedVault(
         self,
@@ -231,10 +264,11 @@ class OpynOptionRegistry(BaseAbi):
         self,
         x_0: Address,
     ) -> tuple[uint64, uint128, bool, Address, Address, Address]:
-        return self._call(
+        my_var_0, my_var_1, my_var_2, my_var_3, my_var_4, my_var_5 = self._call(
             "seriesInfo",
             x_0=x_0
         )
+        return uint64.from_tuple(my_var_0), uint128.from_tuple(my_var_1), bool(my_var_2), Address.from_tuple(my_var_3), Address.from_tuple(my_var_4), Address.from_tuple(my_var_5)
         
     def setAuthority(
         self,
@@ -319,26 +353,29 @@ class OpynOptionRegistry(BaseAbi):
         self,
         _series: Address,
     ) -> tuple[bool, uint_e18, uint_e18, uint_e18]:
-        return self._call(
+        my_var_0, my_var_1, my_var_2, my_var_3 = self._call(
             "settle",
             _series=_series
         )
+        return bool(my_var_0), uint_e18.from_tuple(my_var_1), uint_e18.from_tuple(my_var_2), uint_e18.from_tuple(my_var_3)
         
     def vaultCount(
         self,
     ) -> uint64:
-        return self._call(
+        my_var_0 = self._call(
             "vaultCount"
         )
+        return uint64.from_tuple(my_var_0)
         
     def vaultIds(
         self,
         x_0: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "vaultIds",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def wCollatLiquidatedVault(
         self,

@@ -25,49 +25,54 @@ class priceFeed(BaseAbi):
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def getNormalizedRate(
         self,
         underlying: Address,
         strike: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getNormalizedRate",
             underlying=underlying,
             strike=strike
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getRate(
         self,
         underlying: Address,
         strike: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getRate",
             underlying=underlying,
             strike=strike
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def priceFeeds(
         self,
         x_0: Address,
         x_1: Address,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "priceFeeds",
             x_0=x_0,
             x_1=x_1
         )
+        return Address.from_tuple(my_var_0)
         
     def sequencerUptimeFeedAddress(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "sequencerUptimeFeedAddress"
         )
+        return Address.from_tuple(my_var_0)
         
     def setAuthority(
         self,

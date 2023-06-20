@@ -13,73 +13,83 @@ class OpynAddressBook(BaseAbi):
         self,
         _key: bytes32,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getAddress",
             _key=_key
         )
+        return Address.from_tuple(my_var_0)
         
     def getController(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getController"
         )
+        return Address.from_tuple(my_var_0)
         
     def getLiquidationManager(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getLiquidationManager"
         )
+        return Address.from_tuple(my_var_0)
         
     def getMarginCalculator(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getMarginCalculator"
         )
+        return Address.from_tuple(my_var_0)
         
     def getMarginPool(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getMarginPool"
         )
+        return Address.from_tuple(my_var_0)
         
     def getOracle(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getOracle"
         )
+        return Address.from_tuple(my_var_0)
         
     def getOtokenFactory(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getOtokenFactory"
         )
+        return Address.from_tuple(my_var_0)
         
     def getOtokenImpl(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getOtokenImpl"
         )
+        return Address.from_tuple(my_var_0)
         
     def getWhitelist(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getWhitelist"
         )
+        return Address.from_tuple(my_var_0)
         
     def owner(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "owner"
         )
+        return Address.from_tuple(my_var_0)
         
     def renounceOwnership(
         self,

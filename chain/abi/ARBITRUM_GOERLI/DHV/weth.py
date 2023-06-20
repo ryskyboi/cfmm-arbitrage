@@ -12,81 +12,90 @@ class weth(BaseAbi):
     def DOMAIN_SEPARATOR(
         self,
     ) -> bytes32:
-        return self._call(
+        my_var_0 = self._call(
             "DOMAIN_SEPARATOR"
         )
+        return bytes32.from_tuple(my_var_0)
         
     def allowance(
         self,
         x_0: Address,
         x_1: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "allowance",
             x_0=x_0,
             x_1=x_1
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def approve(
         self,
         spender: Address,
         amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "approve",
             spender=spender,
             amount=amount
         )
+        return bool(my_var_0)
         
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def balanceOf(
         self,
         x_0: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "balanceOf",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def decimals(
         self,
     ) -> uint8:
-        return self._call(
+        my_var_0 = self._call(
             "decimals"
         )
+        return uint8.from_tuple(my_var_0)
         
     def mint(
         self,
         to_: Address,
         amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "mint",
             to_=to_,
             amount=amount
         )
+        return bool(my_var_0)
         
     def name(
         self,
-    ) -> str:
-        return self._call(
+    ) -> BaseStr:
+        my_var_0 = self._call(
             "name"
         )
+        return BaseStr.from_tuple(my_var_0)
         
     def nonces(
         self,
         x_0: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "nonces",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def permit(
         self,
@@ -120,28 +129,31 @@ class weth(BaseAbi):
         
     def symbol(
         self,
-    ) -> str:
-        return self._call(
+    ) -> BaseStr:
+        my_var_0 = self._call(
             "symbol"
         )
+        return BaseStr.from_tuple(my_var_0)
         
     def totalSupply(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "totalSupply"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def transfer(
         self,
         to_: Address,
         amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "transfer",
             to_=to_,
             amount=amount
         )
+        return bool(my_var_0)
         
     def transferFrom(
         self,
@@ -149,10 +161,11 @@ class weth(BaseAbi):
         to_: Address,
         amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "transferFrom",
             from_=from_,
             to_=to_,
             amount=amount
         )
+        return bool(my_var_0)
     

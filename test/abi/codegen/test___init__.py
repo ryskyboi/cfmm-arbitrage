@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from chain.abi import AbiManager
 from chain.abi.codegen import ProtocolAbiCodegen, AbiConfig

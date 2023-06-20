@@ -34,87 +34,96 @@ class OpynOracle(BaseAbi):
         _asset: Address,
         _roundId: uint80,
     ) -> tuple[uint_e18, uint_e18]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "getChainlinkRoundData",
             _asset=_asset,
             _roundId=_roundId
         )
+        return uint_e18.from_tuple(my_var_0), uint_e18.from_tuple(my_var_1)
         
     def getDisputer(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getDisputer"
         )
+        return Address.from_tuple(my_var_0)
         
     def getExpiryPrice(
         self,
         _asset: Address,
         _expiryTimestamp: uint_e18,
     ) -> tuple[uint_e18, bool]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "getExpiryPrice",
             _asset=_asset,
             _expiryTimestamp=_expiryTimestamp
         )
+        return uint_e18.from_tuple(my_var_0), bool(my_var_1)
         
     def getPrice(
         self,
         _asset: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getPrice",
             _asset=_asset
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getPricer(
         self,
         _asset: Address,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getPricer",
             _asset=_asset
         )
+        return Address.from_tuple(my_var_0)
         
     def getPricerDisputePeriod(
         self,
         _pricer: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getPricerDisputePeriod",
             _pricer=_pricer
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getPricerLockingPeriod(
         self,
         _pricer: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getPricerLockingPeriod",
             _pricer=_pricer
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def isDisputePeriodOver(
         self,
         _asset: Address,
         _expiryTimestamp: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "isDisputePeriodOver",
             _asset=_asset,
             _expiryTimestamp=_expiryTimestamp
         )
+        return bool(my_var_0)
         
     def isLockingPeriodOver(
         self,
         _asset: Address,
         _expiryTimestamp: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "isLockingPeriodOver",
             _asset=_asset,
             _expiryTimestamp=_expiryTimestamp
         )
+        return bool(my_var_0)
         
     def migrateOracle(
         self,
@@ -132,9 +141,10 @@ class OpynOracle(BaseAbi):
     def owner(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "owner"
         )
+        return Address.from_tuple(my_var_0)
         
     def renounceOwnership(
         self,

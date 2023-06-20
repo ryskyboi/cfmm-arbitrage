@@ -19,7 +19,7 @@ _TYPE_LOOKUP = {
     "int256": int_e18,
     "int32": int_e6,
     "bool": bool,
-    "address": BaseAddress,
+    "address": Address,
     "bytes": BaseBytes,
     "bytes32": bytes32,
     "string": BaseStr
@@ -102,7 +102,7 @@ class VarSpec(JSONWizard):
             {component.generate_from_tuple_call(f"args[{i}]")},"""
         from_tuple = f"""
     @classmethod
-    def from_tuple(cls: Type[Self], args: tuple) -> Self:
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
         return cls({from_tuple_args}
         )
 """

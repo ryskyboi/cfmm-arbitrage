@@ -1,26 +1,23 @@
 from datetime import datetime as dt
 
 from chain.abi import AbiManager
-from chain.abi.types import cast_e6_to_float, cast_e18_to_float, cast_e27_to_float
+from chain.abi.ARBITRUM_GOERLI.DHV.OpynNewCalculator import OpynNewCalculator
+from chain.abi.ARBITRUM_GOERLI.DHV.beyondPricer import beyondPricer
+from chain.abi.ARBITRUM_GOERLI.DHV.lens import lens, DHVLensMK1_OptionStrikeDrill
+from chain.abi.ARBITRUM_GOERLI.DHV.usdc import usdc
+from chain.abi.ARBITRUM_GOERLI.DHV.volFeed import volFeed
+# Testnet token contracts
+from chain.abi.ARBITRUM_GOERLI.DHV.weth import weth
+from chain.abi.types import int_e18, uint_e18
+from chain.api.dhv.collatparams import CollateralParams
+from chain.api.dhv.positions import OptionPosition
 from chain.api.dhv.sabrparams import SabrModelParam, SabrExpiryParams
+from chain.api.dhv.slippagegradient import SlippageGradient
+from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams, \
+    DeltaSpreadParams
 from chain.api.reader import ChainReader
 from chain.chains import ChainDefinition
 from chain.web3_api import Web3Endpoint
-
-from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams,\
-    DeltaSpreadParams
-from chain.api.dhv.positions import OptionPosition
-from chain.api.dhv.collatparams import CollateralParams
-from chain.api.dhv.slippageparams import SlippageParams
-
-from chain.abi.ARBITRUM_GOERLI.DHV.volFeed import volFeed
-from chain.abi.ARBITRUM_GOERLI.DHV.beyondPricer import beyondPricer
-from chain.abi.ARBITRUM_GOERLI.DHV.lens import lens, DHVLensMK1_OptionChain
-from chain.abi.ARBITRUM_GOERLI.DHV.OpynNewCalculator import OpynNewCalculator
-
-##Testnet token contracts
-from chain.abi.ARBITRUM_GOERLI.DHV.weth import weth
-from chain.abi.ARBITRUM_GOERLI.DHV.usdc import usdc
 
 
 class DhvChainReader(ChainReader):
@@ -30,8 +27,8 @@ class DhvChainReader(ChainReader):
         self.protocol_def = "DHV"
         self._vol_feed: volFeed = self._contract(volFeed)
         self._beyond_pricer: beyondPricer = self._contract(beyondPricer)
-        self._lens : lens = self._contract(lens)
-        self._opyn_calculator : OpynNewCalculator = self._contract(OpynNewCalculator)
+        self._lens: lens = self._contract(lens)
+        self._opyn_calculator: OpynNewCalculator = self._contract(OpynNewCalculator)
 
     def expiry_timestamps_s(self, is_include_expired=False) -> list[int]:
         """
@@ -41,124 +38,131 @@ class DhvChainReader(ChainReader):
         return [t for t in self._vol_feed.getExpiries()
                 if t > int(dt.now().timestamp()) or is_include_expired]
 
-    def sabr_param_data(self, is_include_expired=False) -> list[SabrExpiryParams]:
+    def sabrs(self, is_include_expired=False) -> list[SabrExpiryParams]:
         """
-        List of all sabr data, including rate, optionally include expired dates.
+        List of all sabr parameter data, including rate, optionally include expired dates.
         :return:
         """
         sabrs: list[SabrExpiryParams] = []
         for t in self.expiry_timestamps_s(is_include_expired):
-            chain_sabr = self._vol_feed.sabrParams(t)
+            chain_sabr = self._vol_feed.sabrParams(uint_e18(t))
             sabrs.append(
                 SabrExpiryParams(
                     t,
                     SabrModelParam(
-                        cast_e6_to_float(chain_sabr[0]),
-                        cast_e6_to_float(chain_sabr[1]),
-                        cast_e6_to_float(chain_sabr[2]),
-                        cast_e6_to_float(chain_sabr[3]),
+                        chain_sabr[0].to_float_e6(),
+                        chain_sabr[1].to_float_e6(),
+                        chain_sabr[2].to_float_e6(),
+                        chain_sabr[3].to_float_e6(),
                     ),
                     SabrModelParam(
-                        cast_e6_to_float(chain_sabr[4]),
-                        cast_e6_to_float(chain_sabr[5]),
-                        cast_e6_to_float(chain_sabr[6]),
-                        cast_e6_to_float(chain_sabr[7]),
+                        chain_sabr[4].to_float_e6(),
+                        chain_sabr[5].to_float_e6(),
+                        chain_sabr[6].to_float_e6(),
+                        chain_sabr[7].to_float_e6(),
                     ),
-                    float(chain_sabr[8])
+                    chain_sabr[8].to_float_e18()
                 )
             )
         return sabrs
 
-    def position_data(self) -> list[OptionPosition]:
+    def option_positions(self) -> list[OptionPosition]:
         """
-        All open option positions in the DHV
+        All open (not yet expired) option positions in the DHV
         :return: list of OptionPosition objects.
         """
-        _position_data : list[OptionPosition] = []
-        # TODO: _lens.getOptionChain() is buggy
         option_chain = self._lens.getOptionChain()
-        data = option_chain[1]
-        for _by_expiration in data:
-            expiry = _by_expiration[0]
-            for _by_strike_calls in _by_expiration[2]:
-                strike = cast_e18_to_float(_by_strike_calls[0])
-                _position_data.append(
-                    OptionPosition(expiry, True, strike, cast_e18_to_float(_by_strike_calls[4]))
-                )
-            for _by_strike_puts in _by_expiration[4]:
-                strike = cast_e18_to_float(_by_strike_puts[0])
-                _position_data.append(
-                    OptionPosition(expiry, False, strike, cast_e18_to_float(_by_strike_puts[4]))
-                )
-        return _position_data
+        pos: list[OptionPosition] = []
 
-    def collat_param_data(self, is_usd_collateral: bool = False) -> CollateralParams:
+        def opt_pos(is_call: bool, options: list[DHVLensMK1_OptionStrikeDrill]) -> list[OptionPosition]:
+            return [
+                OptionPosition(
+                    smile.expiration.to_float_e0(),
+                    is_call,
+                    o.strike.to_float_e18(),
+                    o.exposure.to_float_e18()
+                ) for o in options
+            ]
+
+        for smile in option_chain.optionExpirationDrills:
+            pos += opt_pos(True, smile.callOptionDrill) + \
+                   opt_pos(False, smile.putOptionDrill)
+        return pos
+
+    def collateral_params(self, is_usd_collateral: bool = False) -> CollateralParams:
         """
         https://www.notion.so/rysk/DHV-Parameters-numbers-7e79e9ffb88e4bc9bcc9c8b813233424
-        Takes in the collat that we are using and outputs current collat params
-        Returns:
+        Takes in the collateral currency and outputs collateral params
+        :return:
             CollateralParams: spot shocks and maps of DTE to premium curves for both calls and puts
         """
         usdc_address = usdc.address
         weth_address = weth.address
         collat = usdc_address if is_usd_collateral else weth_address
-        call_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(
-            weth_address, usdc_address, collat, False))
-        put_spot_shock = cast_e27_to_float(self._opyn_calculator.getSpotShock(
-            weth_address, usdc_address, collat, True))
-        times_to_exp_calls = self._opyn_calculator.getTimesToExpiry(
-            weth_address, usdc_address, collat, False)
-        times_to_exp_puts = self._opyn_calculator.getTimesToExpiry(
-            weth_address, usdc_address, collat, True)
-        max_prices_calls = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(
-            weth_address, usdc_address, collat, False, t)) for t in times_to_exp_calls]
-        max_prices_puts = [cast_e27_to_float(self._opyn_calculator.getMaxPrice(
-            weth_address, usdc_address, collat, True, t)) for t in times_to_exp_puts]
-        return CollateralParams(call_spot_shock,
-                                dict(zip([t/(60*60*24) for t in times_to_exp_calls],
-                                         max_prices_calls)),
-                                put_spot_shock,
-                                dict(zip([t/(60*60*24) for t in times_to_exp_puts],
-                                         max_prices_puts)))
+        opyn = self._opyn_calculator
+        call_spot_shock: float = opyn.getSpotShock(weth_address, usdc_address, collat, False).to_float_e27()
+        put_spot_shock: float = opyn.getSpotShock(weth_address, usdc_address, collat, True).to_float_e27()
+        times_to_exp_calls = opyn.getTimesToExpiry(weth_address, usdc_address, collat, False)
+        times_to_exp_puts = self._opyn_calculator.getTimesToExpiry(weth_address, usdc_address, collat, True)
+        max_prices_calls = [
+            opyn.getMaxPrice(weth_address, usdc_address, collat, False, t).to_float_e27()
+            for t in times_to_exp_calls
+        ]
+        max_prices_puts = [
+            opyn.getMaxPrice(weth_address, usdc_address, collat, True, t).to_float_e27()
+            for t in times_to_exp_puts
+        ]
+        return CollateralParams(
+            call_spot_shock,
+            dict(zip([t / (60 * 60 * 24) for t in times_to_exp_calls], max_prices_calls)),
+            put_spot_shock,
+            dict(zip([t / (60 * 60 * 24) for t in times_to_exp_puts], max_prices_puts))
+        )
 
-    def slippage_param_data(self) -> SlippageParams:
-        """Takes slippage params that we are currently using on chain and outputs them
-
-        Returns:
+    def slippage_params(self) -> SlippageGradient:
+        """
+        :return:
             SlippageGradientMultipliers: slippage gradient multipliers for calls and puts
             SlippageGradient; number we multiply all parsnms by
         """
-        call_slippage_gradient_multipliers =\
-            self._beyond_pricer.getCallSlippageGradientMultipliers()
-        put_slippage_gradient_multipliers =\
-            self._beyond_pricer.getPutSlippageGradientMultipliers()
+        call_slippage_gradient_multipliers = self._beyond_pricer.getCallSlippageGradientMultipliers()
+        put_slippage_gradient_multipliers = self._beyond_pricer.getPutSlippageGradientMultipliers()
         slippage_gradient = self._beyond_pricer.slippageGradient()
-        return SlippageParams([cast_e18_to_float(multiplier) for multiplier
-                               in put_slippage_gradient_multipliers],
-                              [cast_e18_to_float(multiplier) for multiplier
-                               in call_slippage_gradient_multipliers],
-                              cast_e18_to_float(slippage_gradient))
+        return SlippageGradient(
+            [multiplier.to_float_e18() for multiplier in put_slippage_gradient_multipliers],
+            [multiplier.to_float_e18() for multiplier in call_slippage_gradient_multipliers],
+            slippage_gradient.to_float_e18()
+        )
 
-    def fee_iv_spread_param_data(self) -> FeeIvSpreadParams:
-        """returns: feeivspreadparsms contains a fee per contract a relative myltiplier
-        that allows us to pay less in IV than we buy it for
+    def fee(self) -> float:
         """
-        fee_per_contract = self._beyond_pricer.feePerContract()
-        iv_relative_spread = self._beyond_pricer.bidAskIVSpread()
-        return FeeIvSpreadParams(cast_e6_to_float(fee_per_contract),
-                                 cast_e6_to_float(iv_relative_spread))
+        Fee. The fixed dollar amount a trader pays to make a trade.
+        """
+        return self._beyond_pricer.feePerContract().to_float_e6()
 
-    def delta_spread_param_data(self) -> DeltaSpreadParams:
-        """returns: delta_spread_params contains 4 rates charged when buying/sellig
+    def iv_spread(self) -> float:
+        """
+        An additional volatility spread to charge traders. Aka *the handbrake*.
+        """
+        return self._beyond_pricer.bidAskIVSpread().to_float_e6()
+
+    def delta_rates(self) -> DeltaSpreadParams:
+        """returns: delta_spread_params contains 4 rates charged when buying/selling
         calls and puts and their related hedging activities"""
-        delta_borrow_rates = self._beyond_pricer.deltaBorrowRates()
-        return DeltaSpreadParams(cast_e6_to_float(delta_borrow_rates[1]),
-                                  cast_e6_to_float(delta_borrow_rates[0]),
-                                  cast_e6_to_float(delta_borrow_rates[2]),
-                                  cast_e6_to_float(delta_borrow_rates[3]))
+        sellLong: int_e18  # when someone sells puts to DHV (we need to long to hedge)
+        sellShort: int_e18  # when someone sells calls to DHV (we need to short to hedge)
+        buyLong: int_e18  # when someone buys calls from DHV (we need to long to hedge)
+        buyShort: int_e18  # when someone buys puts from DHV (we need to short to hedge)
+        sellLong, sellShort, buyLong, buyShort = self._beyond_pricer.deltaBorrowRates()
 
-    def collat_spread_param_data(self):
-        """returns: collat_spread_params contains the rate paid on
-            collat that the DHV has to lock up"""
-        collat_lending_rate = self._beyond_pricer.collateralLendingRate()
-        return CollateralSpreadParams(cast_e6_to_float(collat_lending_rate))
+        dhv_buy_call_rate: float = sellShort.to_float_e6()
+        dhv_buy_put_rate: float = sellLong.to_float_e6()
+        dhv_sell_call_rate: float = buyLong.to_float_e6()
+        dhv_sell_put_rate: float = buyShort.to_float_e6()
+
+        return DeltaSpreadParams(dhv_buy_call_rate, dhv_buy_put_rate, dhv_sell_call_rate, dhv_sell_put_rate)
+
+    def collateral_rate(self) -> float:
+        """Collateral spread param: the rate charged to traders for
+            the cost of capital on the collat that the DHV has to lock up to mint a short position."""
+        return self._beyond_pricer.collateralLendingRate().to_float_e6()

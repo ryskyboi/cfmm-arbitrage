@@ -10,6 +10,22 @@ class BaseInt(int):
     def from_tuple(cls: type[Self], args: int) -> Self:
         return cls(args)
 
+    def to_float_e0(self) -> float:
+        """Convert int directly to float. `float(x)`"""
+        return float(self)
+
+    def to_float_e6(self) -> float:
+        return float(self)/1e6
+
+    def to_float_e18(self) -> float:
+        return float(self)/1e18
+
+    def to_float_e27(self) -> float:
+        return float(self)/1e27
+
+    def to_int(self) -> int:
+        return int(self)
+
 
 class int_e6(BaseInt):
     def to_float(self) -> float:
@@ -98,7 +114,4 @@ class BaseStr(str):
         return cls(args)
 
 
-class BaseAddress(Address):
-    @classmethod
-    def from_tuple(cls: type[Self], args: str) -> Self:
-        return cls(args)
+# Address.from_tuple = lambda args: Address(args)

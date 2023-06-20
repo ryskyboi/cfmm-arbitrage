@@ -8,6 +8,7 @@ class OptionPosition(JSONWizard):
     is_call: bool
     strike: float
     position: float
+    """Number of contracts the DHV is long (negative=short)."""
 
     # This isn't used anywhere?
     # def to_dict(self):

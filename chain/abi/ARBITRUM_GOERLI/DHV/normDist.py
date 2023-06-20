@@ -13,26 +13,29 @@ class normDist(BaseAbi):
         self,
         x: int_e18,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "cdf",
             x=x
         )
+        return int_e18.from_tuple(my_var_0)
         
     def getScoresFromT(
         self,
         t: int_e18,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getScoresFromT",
             t=t
         )
+        return int_e18.from_tuple(my_var_0)
         
     def phi(
         self,
         x: int_e18,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "phi",
             x=x
         )
+        return int_e18.from_tuple(my_var_0)
     

@@ -15,15 +15,29 @@ class Types_OptionSeries:
     strikeAsset: Address
     collateral: Address
 
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            uint64.from_tuple(args[0]),
+            uint128.from_tuple(args[1]),
+            bool(args[2]),
+            Address.from_tuple(args[3]),
+            Address.from_tuple(args[4]),
+            Address.from_tuple(args[5]),
+        )
+
+
+
 class liquidityPool(BaseAbi):
     address: Address = Address("0x0B1Bf5fb77AA36cD48Baa1395Bc2B5fa0f135d8C")
     
     def DOMAIN_SEPARATOR(
         self,
     ) -> bytes32:
-        return self._call(
+        my_var_0 = self._call(
             "DOMAIN_SEPARATOR"
         )
+        return bytes32.from_tuple(my_var_0)
         
     def adjustCollateral(
         self,
@@ -56,45 +70,50 @@ class liquidityPool(BaseAbi):
         x_0: Address,
         x_1: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "allowance",
             x_0=x_0,
             x_1=x_1
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def approve(
         self,
         spender: Address,
         amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "approve",
             spender=spender,
             amount=amount
         )
+        return bool(my_var_0)
         
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def balanceOf(
         self,
         x_0: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "balanceOf",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def bufferPercentage(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "bufferPercentage"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def changeHandler(
         self,
@@ -110,92 +129,104 @@ class liquidityPool(BaseAbi):
     def checkBuffer(
         self,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "checkBuffer"
         )
+        return int_e18.from_tuple(my_var_0)
         
     def collateralAllocated(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "collateralAllocated"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def collateralAsset(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "collateralAsset"
         )
+        return Address.from_tuple(my_var_0)
         
     def collateralCap(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "collateralCap"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def completeWithdraw(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "completeWithdraw"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def decimals(
         self,
     ) -> uint8:
-        return self._call(
+        my_var_0 = self._call(
             "decimals"
         )
+        return uint8.from_tuple(my_var_0)
         
     def deposit(
         self,
         _amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "deposit",
             _amount=_amount
         )
+        return bool(my_var_0)
         
     def depositEpoch(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "depositEpoch"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def depositEpochPricePerShare(
         self,
         x_0: uint_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "depositEpochPricePerShare",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def depositReceipts(
         self,
         x_0: Address,
     ) -> tuple[uint128, uint128, uint_e18]:
-        return self._call(
+        my_var_0, my_var_1, my_var_2 = self._call(
             "depositReceipts",
             x_0=x_0
         )
+        return uint128.from_tuple(my_var_0), uint128.from_tuple(my_var_1), uint_e18.from_tuple(my_var_2)
         
     def ephemeralDelta(
         self,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "ephemeralDelta"
         )
+        return int_e18.from_tuple(my_var_0)
         
     def ephemeralLiabilities(
         self,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "ephemeralLiabilities"
         )
+        return int_e18.from_tuple(my_var_0)
         
     def executeEpochCalculation(
         self,
@@ -207,32 +238,36 @@ class liquidityPool(BaseAbi):
     def getAssets(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getAssets"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getBalance(
         self,
         asset: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getBalance",
             asset=asset
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getExternalDelta(
         self,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getExternalDelta"
         )
+        return int_e18.from_tuple(my_var_0)
         
     def getHedgingReactors(
         self,
     ) -> list[Address]:
-        return self._call(
+        my_var_0 = self._call(
             "getHedgingReactors"
         )
+        return [Address.from_tuple(arg_0) for arg_0 in my_var_0]
         
     def getImpliedVolatility(
         self,
@@ -241,43 +276,48 @@ class liquidityPool(BaseAbi):
         strikePrice: uint_e18,
         expiration: uint_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getImpliedVolatility",
             isPut=isPut,
             underlyingPrice=underlyingPrice,
             strikePrice=strikePrice,
             expiration=expiration
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getNAV(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getNAV"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def getPortfolioDelta(
         self,
     ) -> int_e18:
-        return self._call(
+        my_var_0 = self._call(
             "getPortfolioDelta"
         )
+        return int_e18.from_tuple(my_var_0)
         
     def getVolatilityFeed(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "getVolatilityFeed"
         )
+        return Address.from_tuple(my_var_0)
         
     def handler(
         self,
         x_0: Address,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "handler",
             x_0=x_0
         )
+        return bool(my_var_0)
         
     def handlerBuybackOption(
         self,
@@ -289,7 +329,7 @@ class liquidityPool(BaseAbi):
         delta: int_e18,
         seller: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "handlerBuybackOption",
             optionSeries=optionSeries,
             amount=amount,
@@ -299,15 +339,17 @@ class liquidityPool(BaseAbi):
             delta=delta,
             seller=seller
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def handlerIssue(
         self,
         optionSeries: Types_OptionSeries,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "handlerIssue",
             optionSeries=optionSeries
         )
+        return Address.from_tuple(my_var_0)
         
     def handlerIssueAndWriteOption(
         self,
@@ -317,7 +359,7 @@ class liquidityPool(BaseAbi):
         delta: int_e18,
         recipient: Address,
     ) -> tuple[uint_e18, Address]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "handlerIssueAndWriteOption",
             optionSeries=optionSeries,
             amount=amount,
@@ -325,6 +367,7 @@ class liquidityPool(BaseAbi):
             delta=delta,
             recipient=recipient
         )
+        return uint_e18.from_tuple(my_var_0), Address.from_tuple(my_var_1)
         
     def handlerWriteOption(
         self,
@@ -336,7 +379,7 @@ class liquidityPool(BaseAbi):
         delta: int_e18,
         recipient: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "handlerWriteOption",
             optionSeries=optionSeries,
             seriesAddress=seriesAddress,
@@ -346,15 +389,17 @@ class liquidityPool(BaseAbi):
             delta=delta,
             recipient=recipient
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def hedgingReactors(
         self,
         x_0: uint_e18,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "hedgingReactors",
             x_0=x_0
         )
+        return Address.from_tuple(my_var_0)
         
     def initiateWithdraw(
         self,
@@ -368,62 +413,70 @@ class liquidityPool(BaseAbi):
     def isTradingPaused(
         self,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "isTradingPaused"
         )
+        return bool(my_var_0)
         
     def keeper(
         self,
         x_0: Address,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "keeper",
             x_0=x_0
         )
+        return bool(my_var_0)
         
     def maxPriceDeviationThreshold(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "maxPriceDeviationThreshold"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def maxTimeDeviationThreshold(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "maxTimeDeviationThreshold"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def name(
         self,
-    ) -> str:
-        return self._call(
+    ) -> BaseStr:
+        my_var_0 = self._call(
             "name"
         )
+        return BaseStr.from_tuple(my_var_0)
         
     def nonces(
         self,
         x_0: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "nonces",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def optionParams(
         self,
     ) -> tuple[uint128, uint128, uint128, uint128, uint128, uint128]:
-        return self._call(
+        my_var_0, my_var_1, my_var_2, my_var_3, my_var_4, my_var_5 = self._call(
             "optionParams"
         )
+        return uint128.from_tuple(my_var_0), uint128.from_tuple(my_var_1), uint128.from_tuple(my_var_2), uint128.from_tuple(my_var_3), uint128.from_tuple(my_var_4), uint128.from_tuple(my_var_5)
         
     def partitionedFunds(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "partitionedFunds"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def pause(
         self,
@@ -435,9 +488,10 @@ class liquidityPool(BaseAbi):
     def pauseTradingAndRequest(
         self,
     ) -> bytes32:
-        return self._call(
+        my_var_0 = self._call(
             "pauseTradingAndRequest"
         )
+        return bytes32.from_tuple(my_var_0)
         
     def pauseUnpauseTrading(
         self,
@@ -451,23 +505,26 @@ class liquidityPool(BaseAbi):
     def paused(
         self,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "paused"
         )
+        return bool(my_var_0)
         
     def pendingDeposits(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "pendingDeposits"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def pendingWithdrawals(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "pendingWithdrawals"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def permit(
         self,
@@ -493,9 +550,10 @@ class liquidityPool(BaseAbi):
     def protocol(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "protocol"
         )
+        return Address.from_tuple(my_var_0)
         
     def rebalancePortfolioDelta(
         self,
@@ -512,10 +570,11 @@ class liquidityPool(BaseAbi):
         self,
         _shares: uint_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "redeem",
             _shares=_shares
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def removeHedgingReactorAddress(
         self,
@@ -538,9 +597,10 @@ class liquidityPool(BaseAbi):
     def riskFreeRate(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "riskFreeRate"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def setAuthority(
         self,
@@ -639,42 +699,47 @@ class liquidityPool(BaseAbi):
         self,
         seriesAddress: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "settleVault",
             seriesAddress=seriesAddress
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def strikeAsset(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "strikeAsset"
         )
+        return Address.from_tuple(my_var_0)
         
     def symbol(
         self,
-    ) -> str:
-        return self._call(
+    ) -> BaseStr:
+        my_var_0 = self._call(
             "symbol"
         )
+        return BaseStr.from_tuple(my_var_0)
         
     def totalSupply(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "totalSupply"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def transfer(
         self,
         to_: Address,
         amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "transfer",
             to_=to_,
             amount=amount
         )
+        return bool(my_var_0)
         
     def transferFrom(
         self,
@@ -682,19 +747,21 @@ class liquidityPool(BaseAbi):
         to_: Address,
         amount: uint_e18,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "transferFrom",
             from_=from_,
             to_=to_,
             amount=amount
         )
+        return bool(my_var_0)
         
     def underlyingAsset(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "underlyingAsset"
         )
+        return Address.from_tuple(my_var_0)
         
     def unpause(
         self,
@@ -706,25 +773,28 @@ class liquidityPool(BaseAbi):
     def withdrawalEpoch(
         self,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "withdrawalEpoch"
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def withdrawalEpochPricePerShare(
         self,
         x_0: uint_e18,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "withdrawalEpochPricePerShare",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def withdrawalReceipts(
         self,
         x_0: Address,
     ) -> tuple[uint128, uint128]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "withdrawalReceipts",
             x_0=x_0
         )
+        return uint128.from_tuple(my_var_0), uint128.from_tuple(my_var_1)
     

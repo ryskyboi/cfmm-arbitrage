@@ -12,46 +12,52 @@ class authority(BaseAbi):
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def governor(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "governor"
         )
+        return Address.from_tuple(my_var_0)
         
     def guardian(
         self,
         x_0: Address,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "guardian",
             x_0=x_0
         )
+        return bool(my_var_0)
         
     def manager(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "manager"
         )
+        return Address.from_tuple(my_var_0)
         
     def newGovernor(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "newGovernor"
         )
+        return Address.from_tuple(my_var_0)
         
     def newManager(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "newManager"
         )
+        return Address.from_tuple(my_var_0)
         
     def pullGovernor(
         self,

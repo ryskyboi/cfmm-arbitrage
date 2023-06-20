@@ -14,6 +14,18 @@ class Types_Option:
     isBuyable: bool
     isSellable: bool
 
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            uint64.from_tuple(args[0]),
+            uint128.from_tuple(args[1]),
+            bool(args[2]),
+            bool(args[3]),
+            bool(args[4]),
+        )
+
+
+
 @dataclass
 class Types_OptionSeries:
     expiration: uint64
@@ -23,6 +35,19 @@ class Types_OptionSeries:
     strikeAsset: Address
     collateral: Address
 
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            uint64.from_tuple(args[0]),
+            uint128.from_tuple(args[1]),
+            bool(args[2]),
+            Address.from_tuple(args[3]),
+            Address.from_tuple(args[4]),
+            Address.from_tuple(args[5]),
+        )
+
+
+
 @dataclass
 class BeyondPricer_DeltaBorrowRates:
     sellLong: int_e18
@@ -30,22 +55,35 @@ class BeyondPricer_DeltaBorrowRates:
     buyLong: int_e18
     buyShort: int_e18
 
+    @classmethod
+    def from_tuple(cls: type[Self], args: tuple) -> Self:
+        return cls(
+            int_e18.from_tuple(args[0]),
+            int_e18.from_tuple(args[1]),
+            int_e18.from_tuple(args[2]),
+            int_e18.from_tuple(args[3]),
+        )
+
+
+
 class manager(BaseAbi):
     address: Address = Address("0xB8Cb70cf67EF7d7dFb1C70bc7A169DFCcCF0753c")
     
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def beyondPricer(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "beyondPricer"
         )
+        return Address.from_tuple(my_var_0)
         
     def changeOptionBuyOrSell(
         self,
@@ -66,7 +104,7 @@ class manager(BaseAbi):
         _isBuyBack: bool,
         _spotMovementRange: list[uint_e18],
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "createOrder",
             _optionSeries=_optionSeries,
             _amount=_amount,
@@ -76,6 +114,7 @@ class manager(BaseAbi):
             _isBuyBack=_isBuyBack,
             _spotMovementRange=_spotMovementRange
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def createStrangle(
         self,
@@ -90,7 +129,7 @@ class manager(BaseAbi):
         _callSpotMovementRange: list[uint_e18],
         _putSpotMovementRange: list[uint_e18],
     ) -> tuple[uint_e18, uint_e18]:
-        return self._call(
+        my_var_0, my_var_1 = self._call(
             "createStrangle",
             _optionSeriesCall=_optionSeriesCall,
             _optionSeriesPut=_optionSeriesPut,
@@ -103,15 +142,17 @@ class manager(BaseAbi):
             _callSpotMovementRange=_callSpotMovementRange,
             _putSpotMovementRange=_putSpotMovementRange
         )
+        return uint_e18.from_tuple(my_var_0), uint_e18.from_tuple(my_var_1)
         
     def deltaLimit(
         self,
         x_0: Address,
     ) -> uint_e18:
-        return self._call(
+        my_var_0 = self._call(
             "deltaLimit",
             x_0=x_0
         )
+        return uint_e18.from_tuple(my_var_0)
         
     def issueNewSeries(
         self,
@@ -126,45 +167,51 @@ class manager(BaseAbi):
         self,
         x_0: Address,
     ) -> bool:
-        return self._call(
+        my_var_0 = self._call(
             "keeper",
             x_0=x_0
         )
+        return bool(my_var_0)
         
     def liquidityPool(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "liquidityPool"
         )
+        return Address.from_tuple(my_var_0)
         
     def optionCatalogue(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "optionCatalogue"
         )
+        return Address.from_tuple(my_var_0)
         
     def optionExchange(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "optionExchange"
         )
+        return Address.from_tuple(my_var_0)
         
     def optionHandler(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "optionHandler"
         )
+        return Address.from_tuple(my_var_0)
         
     def proxyManager(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "proxyManager"
         )
+        return Address.from_tuple(my_var_0)
         
     def pullManager(
         self,

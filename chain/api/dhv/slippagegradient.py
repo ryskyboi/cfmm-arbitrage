@@ -4,7 +4,7 @@ from typing import List
 from dataclass_wizard import JSONWizard
 
 @dataclass
-class SlippageParams(JSONWizard):
+class SlippageGradient(JSONWizard):
     """
     The multiplies for calls and puts needed to calculate spread
 

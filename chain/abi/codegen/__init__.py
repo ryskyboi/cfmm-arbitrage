@@ -10,6 +10,7 @@ from chain.logger import log
 from chain.protocols import ProtocolDefinition
 from chain.types import Address
 from chain.web3_api import Web3Endpoint
+from test.api.dhv.test_make_res import IS_ENABLE_WEB3_RECORDING, save_res
 
 
 class BaseAbi:
@@ -21,7 +22,12 @@ class BaseAbi:
 
     def _call(self, func_name: str, **kwargs: Any):
         abi_json = self.abi_manager.abi_json(self.address)
-        return self._w3_endpoint.call(self.address, abi_json, func_name, **kwargs)
+        response = self._w3_endpoint.call(self.address, abi_json, func_name, **kwargs)
+        if IS_ENABLE_WEB3_RECORDING:
+            save_res(self.address, func_name, tuple(kwargs.values()), response)
+        log.debug(str((self.__class__.__name__, func_name, tuple(kwargs.values()))))
+        log.debug(response)
+        return response
 
 
 @dataclass

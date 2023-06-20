@@ -12,16 +12,18 @@ class optionProtocol(BaseAbi):
     def accounting(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "accounting"
         )
+        return Address.from_tuple(my_var_0)
         
     def authority(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "authority"
         )
+        return Address.from_tuple(my_var_0)
         
     def changeAccounting(
         self,
@@ -71,23 +73,26 @@ class optionProtocol(BaseAbi):
     def optionRegistry(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "optionRegistry"
         )
+        return Address.from_tuple(my_var_0)
         
     def portfolioValuesFeed(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "portfolioValuesFeed"
         )
+        return Address.from_tuple(my_var_0)
         
     def priceFeed(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "priceFeed"
         )
+        return Address.from_tuple(my_var_0)
         
     def setAuthority(
         self,
@@ -101,7 +106,8 @@ class optionProtocol(BaseAbi):
     def volatilityFeed(
         self,
     ) -> Address:
-        return self._call(
+        my_var_0 = self._call(
             "volatilityFeed"
         )
+        return Address.from_tuple(my_var_0)
     

@@ -80,7 +80,7 @@ class ProtocolAbiCodegen:
                 path_init = folder_path / "__init__.py"
                 if not path_init.exists():
                     path_init.touch()
-s
+
             touch_init(chain_path)
             touch_init(protocol_path)
             for path, source in package_source.items():

@@ -59,11 +59,19 @@ def cast_e27_to_float(x: int_e27) -> float:
     return float(x)/1e27
 
 
+class uint160(BaseInt):
+    ...
+
+
 class uint128(BaseInt):
     ...
 
 
 class uint64(BaseInt):
+    ...
+
+
+class int80(BaseInt):
     ...
 
 

@@ -9,8 +9,10 @@ from chain.logger import log
 
 _TYPE_LOOKUP = {
     "uint256": uint_e18,
+    "uint160": uint160,
     "uint128": uint128,
     "uint80": uint80,
+    "int80": int80,
     "uint64": uint64,
     "uint32": uint32,
     "uint24": uint24,

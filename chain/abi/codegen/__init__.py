@@ -1,16 +1,21 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeVar
 
 from chain.abi import AbiManager
 from chain.abi.codegen.contractspec import ContractSpec
 from chain.abi.codegen.protocolspec import ProtocolSpec
 from chain.abi.path import abi_resource_path, abi_package_path
+from chain.chains import CHAIN
+from chain.contracts import ContractDefinition
 from chain.logger import log
 from chain.protocols import ProtocolDefinition
 from chain.types import Address
 from chain.web3_api import Web3Endpoint
 #from test.api.dhv.test_make_res import IS_ENABLE_WEB3_RECORDING, save_res
+
+
+Self = TypeVar("Self")
 
 
 class BaseAbi:
@@ -57,6 +62,23 @@ class ProtocolAbiCodegen:
         self.config = config
         self.abi_manager = abi_manager
         self.protocol_definition = protocol_definition
+
+    @classmethod
+    def create(
+            cls: type[Self],
+            chain: CHAIN,
+            protocol_name: str,
+            contract_definitions: list[ContractDefinition]
+    ) -> Self:
+        return cls(
+            AbiConfig(),
+            AbiManager(chain.value, abi_resource_path()),
+            ProtocolDefinition(
+                protocol_name,
+                chain,
+                contract_definitions
+            )
+        )
 
     def generate_package_source(self, is_dry_run: bool = True) -> dict[Path, str]:
         """

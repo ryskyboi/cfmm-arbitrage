@@ -35,7 +35,6 @@ class IAccounting_DepositReceipt:
         )
 
 
-
 class accounting(BaseAbi):
     address: Address = Address("0x48672a2885995cF3Ddc9Da633C22b262e0533f7C")
     

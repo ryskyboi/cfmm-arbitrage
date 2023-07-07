@@ -6,6 +6,7 @@ from chain.types import Address, AbiJson
 from chain.web3_api import Web3Endpoint
 
 IS_ENABLE_WEB3_RECORDING = False
+# IS_ENABLE_WEB3_RECORDING = True
 
 
 def res_path() -> Path:

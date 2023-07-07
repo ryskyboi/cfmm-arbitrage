@@ -30,12 +30,5 @@ class ChainReader:
             AbiManager(chain_def, config.abi_resource_folder)
         )
 
-    # TODO: tidy
-    def _old_contract(self, contract_name: str) -> ContractAbi:
-        import importlib
-        contract_mod = importlib.import_module(f"chain.abi.{self._chain_def.name}.{self.protocol_name}.{contract_name}")
-        contract_abi_cls: Type[ContractAbi] = getattr(contract_mod, contract_name)
-        return contract_abi_cls(self.web3_endpoint, self.abi_manager)
-
     def _contract(self, contract_cls: Type[ContractAbi]) -> ContractAbi:
         return contract_cls(self.web3_endpoint, self.abi_manager)

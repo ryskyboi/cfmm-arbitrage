@@ -1,24 +1,22 @@
-from ast import literal_eval
 from unittest import TestCase
 
 from chain.abi import AbiManager
 from chain.abi.path import abi_resource_path
 from chain.api.dhv_comp import DhvCompChainReader
 from chain.chains import CHAIN
-from chain.config import Config
 from chain.logger import log
-from test.api.dhv.test_make_res import MockW3E, load_res
+from test.api.make_res import MockW3E, load_res
 
 
 def load_response(func) -> str:
-    return load_res(func, "response", "", True)
+    return load_res("dhv_comp", func, "response", "", True)
 
 
 class TestApiDhvIntegration(TestCase):
     def test_dhv(self) -> DhvCompChainReader:
         return DhvCompChainReader(
             CHAIN.ARBITRUM_GOERLI.value,
-            MockW3E(),
+            MockW3E("dhv_comp"),
             AbiManager(CHAIN.ARBITRUM_GOERLI.value, abi_resource_path())
         )
 

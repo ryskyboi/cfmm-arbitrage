@@ -15,7 +15,7 @@ from chain.web3_api import Web3Endpoint
 
 IS_ENABLE_WEB3_RECORDING = False
 try:
-    from test.api.dhv.test_make_res import IS_ENABLE_WEB3_RECORDING as _
+    from test.api.make_res import IS_ENABLE_WEB3_RECORDING as _
     IS_ENABLE_WEB3_RECORDING = _
 except ModuleNotFoundError:
     pass
@@ -34,7 +34,7 @@ class BaseAbi:
         abi_json = self.abi_manager.abi_json(self.address)
         response = self._w3_endpoint.call(self.address, abi_json, func_name, **kwargs)
         if IS_ENABLE_WEB3_RECORDING:
-            from test.api.dhv.test_make_res import save_res
+            from test.api.make_res import save_res
             save_res(self.address, func_name, tuple(kwargs.values()), response)
         log.debug(str((self.__class__.__name__, func_name, tuple(kwargs.values()))))
         log.debug(response)

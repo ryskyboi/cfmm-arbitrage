@@ -4,7 +4,7 @@ import test
 from chain.api.dhv_comp import DhvCompChainReader
 from chain.config import Config
 from chain.logger import log
-from test.api.dhv.test_make_res import IS_ENABLE_WEB3_RECORDING, save_res
+from test.api.make_res import IS_ENABLE_WEB3_RECORDING, save_res
 
 
 def save_response(func, response) -> None:

@@ -29,3 +29,8 @@ class CHAIN(Enum):
         "https://arb-goerli.g.alchemy.com/v2/",
         "https://api-goerli.arbiscan.io/api?module=contract&action=getabi&address=",
     )
+    ARBITRUM = ChainDefinition(
+        "ARBITRUM",
+        "https://arb-mainnet.g.alchemy.com/v2/",
+        "https://api.arbiscan.io/api?module=contract&action=getabi&apiKey=YVGVBB99Y81TDQ8SUJ8G9IAQFAPCD7DUQP&address=",
+    )

@@ -1,20 +1,20 @@
 from datetime import datetime as dt
 
 from chain.abi import AbiManager
-from chain.abi.ARBITRUM_GOERLI.DHV.OpynNewCalculator import OpynNewCalculator
-from chain.abi.ARBITRUM_GOERLI.DHV.beyondPricer import beyondPricer
-from chain.abi.ARBITRUM_GOERLI.DHV.lens import lens, DHVLensMK1_OptionStrikeDrill
-from chain.abi.ARBITRUM_GOERLI.DHV.usdc import usdc
-from chain.abi.ARBITRUM_GOERLI.DHV.volFeed import volFeed
-# Testnet token contracts
-from chain.abi.ARBITRUM_GOERLI.DHV.weth import weth
-from chain.abi.types import int_e18, uint_e18
-from chain.api.dhv.collatparams import CollateralParams
-from chain.api.dhv.positions import OptionPosition
-from chain.api.dhv.sabrparams import SabrModelParam, SabrExpiryParams
-from chain.api.dhv.slippagegradient import SlippageGradient
-from chain.api.dhv.spreadparams import FeeIvSpreadParams, CollateralSpreadParams, \
-    DeltaSpreadParams
+from chain.abi.ARBITRUM.DHV_Beyond.DHVlens import DHVlens as lens, DHVLensMK1_OptionStrikeDrill
+from chain.abi.ARBITRUM.DHV_Beyond.OpynNewCalculator import OpynNewCalculator
+from chain.abi.ARBITRUM.DHV_Beyond.beyondPricer import beyondPricer
+from chain.abi.ARBITRUM.DHV_Beyond.usdcNative import usdcNative as usdc
+from chain.abi.ARBITRUM.DHV_Beyond.volFeed import volFeed
+from chain.abi.ARBITRUM.DHV_Beyond.weth import weth
+from chain.abi.types import int_e18, uint_e18, uint16
+from chain.api.dhv.slippage import SlippageSurface
+from chain.api.dhv.spreadparams import SpreadDeltaSurface, SpreadCollateralSurface
+from chain.api.dhv.tenor import MultiplierTenor
+from chain.api.dhv_comp.collatparams import CollateralParams
+from chain.api.dhv_comp.positions import OptionPosition
+from chain.api.dhv_comp.sabrparams import SabrModelParam, SabrExpiryParams
+from chain.api.dhv_comp.spreadparams import DeltaSpreadParams
 from chain.api.reader import ChainReader
 from chain.chains import ChainDefinition
 from chain.web3_api import Web3Endpoint
@@ -24,7 +24,7 @@ class DhvChainReader(ChainReader):
     def __init__(self, chain_def: ChainDefinition,
                  web3_endpoint: Web3Endpoint, abi_manager: AbiManager):
         super().__init__(chain_def, web3_endpoint, abi_manager)
-        self.protocol_def = "DHV"
+        self.protocol_name = "DHV_Beyond"
         self._vol_feed: volFeed = self._contract(volFeed)
         self._beyond_pricer: beyondPricer = self._contract(beyondPricer)
         self._lens: lens = self._contract(lens)
@@ -119,19 +119,74 @@ class DhvChainReader(ChainReader):
             dict(zip([t / (60 * 60 * 24) for t in times_to_exp_puts], max_prices_puts))
         )
 
-    def slippage_params(self) -> SlippageGradient:
+    def max_sqrt_tau_s(self) -> float:
+        """Sqrt of the tau, in seconds, for the longest tenor of the spread/slippage surfaces"""
+        return self._beyond_pricer.maxTenorValue().to_float_e18()
+
+    def slippage_gradient(self) -> float:
         """
+        the gradient of the exponential slippage curve
         :return:
-            SlippageGradientMultipliers: slippage gradient multipliers for calls and puts
-            SlippageGradient; number we multiply all parsnms by
         """
-        call_slippage_gradient_multipliers = self._beyond_pricer.getCallSlippageGradientMultipliers()
-        put_slippage_gradient_multipliers = self._beyond_pricer.getPutSlippageGradientMultipliers()
-        slippage_gradient = self._beyond_pricer.slippageGradient()
-        return SlippageGradient(
-            [multiplier.to_float_e18() for multiplier in put_slippage_gradient_multipliers],
-            [multiplier.to_float_e18() for multiplier in call_slippage_gradient_multipliers],
-            slippage_gradient.to_float_e18()
+        return self._beyond_pricer.slippageGradient().to_float_e18()
+
+    def slippage_multiplier_tenor(self, tenor_index: int) -> MultiplierTenor:
+        """
+
+        :param tenor_index: MultiplierTenors are indexed from 0
+        :return:
+        """
+        return MultiplierTenor(
+            [x.to_float_e18() for x in self._beyond_pricer.getCallSlippageGradientMultipliers(uint16(tenor_index))],
+            [x.to_float_e18() for x in self._beyond_pricer.getPutSlippageGradientMultipliers(uint16(tenor_index))],
+        )
+
+    def slippage_surface(self) -> SlippageSurface:
+        """
+        All the information needed to model slippage through delta and sqrt_tau
+        """
+        return SlippageSurface(
+            self.slippage_gradient(),
+            [self.slippage_multiplier_tenor(i) for i in range(self._beyond_pricer.numberOfTenors())]
+        )
+
+    def spread_delta_multiplier_tenor(self, tenor_index: int) -> MultiplierTenor:
+        return MultiplierTenor(
+            [x.to_float_e18() for x in self._beyond_pricer.getCallSpreadDeltaMultipliers(uint16(tenor_index))],
+            [x.to_float_e18() for x in self._beyond_pricer.getPutSpreadDeltaMultipliers(uint16(tenor_index))],
+        )
+
+    def spread_delta_surface(self) -> SpreadDeltaSurface:
+        return SpreadDeltaSurface(
+            self.delta_rates(),
+            [self.spread_delta_multiplier_tenor(i) for i in range(self._beyond_pricer.numberOfTenors())]
+        )
+
+    def spread_collateral_multiplier_tenor(self, tenor_index: int) -> MultiplierTenor:
+        return MultiplierTenor(
+            [x.to_float_e18() for x in self._beyond_pricer.getCallSpreadCollateralMultipliers(uint16(tenor_index))],
+            [x.to_float_e18() for x in self._beyond_pricer.getPutSpreadCollateralMultipliers(uint16(tenor_index))],
+        )
+
+    def collateral_rate(self) -> float:
+        """Collateral spread param: the rate charged to traders for
+            the cost of capital on the collat that the DHV has to lock up to mint a short position."""
+        return self._beyond_pricer.collateralLendingRate().to_float_e6()
+
+    def collateral_low_delta_threshold(self) -> float:
+        """The delta threshold, under which bid vol is capped."""
+        return self._beyond_pricer.lowDeltaThreshold().to_float_e18()
+
+    def collateral_low_delta_iv(self) -> float:
+        """The cap for bid vol, under the delta threshold."""
+        return self._beyond_pricer.lowDeltaSellOptionFlatIV().to_float_e18()
+
+    def spread_collateral_surface(self) -> SpreadCollateralSurface:
+        return SpreadCollateralSurface(
+            self.collateral_rate(),
+            [self.spread_collateral_multiplier_tenor(i) for i in range(self._beyond_pricer.numberOfTenors())],
+            self.collateral_low_delta_threshold(),
+            self.collateral_low_delta_iv()
         )
 
     def fee(self) -> float:
@@ -147,7 +202,7 @@ class DhvChainReader(ChainReader):
         return self._beyond_pricer.bidAskIVSpread().to_float_e6()
 
     def delta_rates(self) -> DeltaSpreadParams:
-        """returns: delta_spread_params contains 4 rates charged when buying/selling
+        """returns: delta_spread_params contains 4 rates charged when trader buying/selling
         calls and puts and their related hedging activities"""
         sellLong: int_e18  # when someone sells puts to DHV (we need to long to hedge)
         sellShort: int_e18  # when someone sells calls to DHV (we need to short to hedge)
@@ -162,7 +217,3 @@ class DhvChainReader(ChainReader):
 
         return DeltaSpreadParams(dhv_buy_call_rate, dhv_buy_put_rate, dhv_sell_call_rate, dhv_sell_put_rate)
 
-    def collateral_rate(self) -> float:
-        """Collateral spread param: the rate charged to traders for
-            the cost of capital on the collat that the DHV has to lock up to mint a short position."""
-        return self._beyond_pricer.collateralLendingRate().to_float_e6()

@@ -1,15 +1,22 @@
+import logging
+from time import sleep
 from typing import TypeVar, Type
 
 import web3
 import web3.contract
 
 from chain.abi import AbiManager
+from chain.logger import log
 from chain.types import AbiJson, Address
 from chain.chains import CHAIN
 from chain.chains.address_register import AddressManager
 from chain.config import Config
 from chain.contracts import Contract
 from chain.protocols import ContractName
+
+import datetime as dt
+
+_LAST_NOW: list[dt.datetime] = [dt.datetime.now() + dt.timedelta(seconds=-1)]
 
 
 class Web3Endpoint:
@@ -49,6 +56,15 @@ class Web3Endpoint:
 
     def call(self, address: Address, abi_json: AbiJson, func_name: str, **kwargs):
         """Call the function on the contract, with optional kwargs. You must be on the correct chain!"""
+        # TODO: Deploy rate limiting for alchemy. Better still, implement a try-catch-pasue
+        # now = dt.datetime.now()
+        # ms = (now - _LAST_NOW[0]).total_seconds() * 1e3
+        # log.debug(f"Time since last web3 call: {ms} ms")
+        # if ms < 100:
+        #     # Rate limit is 330 CU per second and I guess that 1 req is 26, which is about 10 req/s.
+        #     # https://docs.alchemy.com/reference/compute-units
+        #     sleep((100 - ms) / 1e3)
+        # _LAST_NOW[0] = now
         w3_contract = self.w3.eth.contract(address, abi=abi_json)
         result = w3_contract.functions[func_name](*kwargs.values()).call()
         return result

@@ -1,26 +1,29 @@
 from unittest import TestCase, skip
 
-from chain.abi import AbiManager
-from chain.abi.codegen import ProtocolAbiCodegen, AbiConfig
-from chain.abi.path import abi_resource_path
+from chain.abi.codegen import ProtocolAbiCodegen
 from chain.chains import CHAIN
-from chain.protocols import ProtocolDefinition
-from test.abi.codegen.test_protocolspec import test_dhv_contract_defs
+from test.abi.codegen.RUN.run_dhv_beyond_competition_codegen import \
+    dhv_beyond_competition_contract_defs
 
 
 @skip("Only for codegen!")
 class TestProtocolAbiCodegen(TestCase):
     def test_generate_package_source(self):
-        contracts = test_dhv_contract_defs()
-        gen = ProtocolAbiCodegen(
-            AbiConfig(),
-            AbiManager(CHAIN.ARBITRUM_GOERLI.value, abi_resource_path()),
-            ProtocolDefinition(
-                "DHV",
-                CHAIN.ARBITRUM_GOERLI,
-                contracts
-            )
+        contracts = dhv_beyond_competition_contract_defs()
+        gen = ProtocolAbiCodegen.create(
+            CHAIN.ARBITRUM_GOERLI,
+            "DHV",
+            contracts
         )
+        # gen = ProtocolAbiCodegen(
+        #     AbiConfig(),
+        #     AbiManager(CHAIN.ARBITRUM_GOERLI.value, abi_resource_path()),
+        #     ProtocolDefinition(
+        #         "DHV",
+        #         CHAIN.ARBITRUM_GOERLI,
+        #         contracts
+        #     )
+        # )
         ps = gen.generate_package_source(
             # is_dry_run=False,
         )

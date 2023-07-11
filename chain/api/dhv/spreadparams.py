@@ -1,21 +1,7 @@
 from dataclasses import dataclass
 from dataclass_wizard import JSONWizard
 
-
-@dataclass
-class FeeIvSpreadParams(JSONWizard):
-    """param fee_dollar: Dollar cost applied to every trade where it is less than 12.5% of trade val
-    param iv_relative_spread: Percentage spread to apply to volatility.
-    e.g. at 10%, for DHV buying a 50% vol position, DHV pays 45% vol."""
-    fee_dollar: float
-    iv_relative_spread: float
-
-
-@dataclass
-class CollateralSpreadParams(JSONWizard):
-    collateral_rate: float
-    """param: Interest charged on the minimum collateral DHV would use when minting a short contract
-    Percentage, expressed as decimal."""
+from chain.api.dhv.tenor import MultiplierTenor
 
 
 @dataclass
@@ -27,3 +13,19 @@ class DeltaSpreadParams(JSONWizard):
     dhv_buy_put_rate: float
     dhv_sell_call_rate: float
     dhv_sell_put_rate: float
+
+
+@dataclass
+class SpreadDeltaSurface(JSONWizard):
+    delta_rates: DeltaSpreadParams
+    multipliers: list[MultiplierTenor]
+
+
+@dataclass
+class SpreadCollateralSurface(JSONWizard):
+    collateral_rate: float
+    """param: Interest charged on the minimum collateral DHV would use when minting a short contract
+    Percentage, expressed as decimal."""
+    multipliers: list[MultiplierTenor]
+    low_delta_threshold: float
+    low_delta_iv_cap: float

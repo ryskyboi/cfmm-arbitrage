@@ -6,7 +6,6 @@ from chain.abi.ARBITRUM.DHV_Beyond.OpynNewCalculator import OpynNewCalculator
 from chain.abi.ARBITRUM.DHV_Beyond.beyondPricer import beyondPricer
 from chain.abi.ARBITRUM.DHV_Beyond.usdcNative import usdcNative as usdc
 from chain.abi.ARBITRUM.DHV_Beyond.volFeed import volFeed
-# Testnet token contracts
 from chain.abi.ARBITRUM.DHV_Beyond.weth import weth
 from chain.abi.types import int_e18, uint_e18, uint16
 from chain.api.dhv.slippage import SlippageSurface

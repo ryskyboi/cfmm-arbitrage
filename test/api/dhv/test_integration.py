@@ -9,7 +9,7 @@ from test.api.make_res import IS_ENABLE_WEB3_RECORDING, save_res
 
 def save_response(func, response) -> None:
     if IS_ENABLE_WEB3_RECORDING:
-        save_res(func, "response", "", response)
+        save_res("dhv_beyond", func, "response", "", response)
 
 
 @skipIf(test.IS_DISABLE_LIVE_TESTING, "Skipping live integration tests")

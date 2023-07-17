@@ -67,6 +67,7 @@ class TestApiDhvIntegration(TestCase):
             load_response("test_slippage_surface"),
             "slippage surface fail"
         )
+        log.debug(slippage_surface)
 
     def test_spread_delta_rates(self) -> None:
         delta_rates = self.test_dhv().delta_rates()

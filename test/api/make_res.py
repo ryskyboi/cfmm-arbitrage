@@ -32,6 +32,8 @@ def load_res(protocol: str, address, func_name, arg_list, is_just_text=False) ->
 
 
 class MockW3E(Web3Endpoint):
+    # Since we mock out all functionality, we deliberately do not call super initialiser.
+    # noinspection PyMissingConstructor
     def __init__(self, protocol_name: str):
         self._protocol_name = protocol_name
         ...
